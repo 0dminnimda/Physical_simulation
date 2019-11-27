@@ -40,12 +40,14 @@ vel1, vel2=0, 0
 step=1*10**-3
 num1 = 0
 arr_v = []
-arr_p = []
+arr_p1 = []
+arr_p2 = []
 b = False
 while 1:
     #if num1 % 500 == 0 and b is True:
-    arr_v.append([vel1,vel2])
-    arr_p.append([pos1,pos2])
+    #arr_v.append([vel1,vel2])
+    arr_p1.append(pos1)
+    arr_p2.append(pos2)
     num1 += 1
     t = coun(pos1,pos2,vel1,vel2,step)
     pos1, pos2, vel1, vel2, a1, a2 = t
@@ -68,8 +70,13 @@ print(" скорость 1 тела при столкнлвении",vel1)
 print(" скорость 2 тела при столкнлвении",vel2,"\n")
 #print(arr_v,arr_p)
 
-f = open("text.txt", "w")
+f = open("text1.txt", "w")
 #f.write(str(arr_v))
 #f.write("\n\n\n")
-f.write(str(arr_p))
-f.close() 
+for i in arr_p1:
+    f.write(str(i)+" ")
+f.close()
+f = open("text2.txt", "w")
+for i in arr_p2:
+    f.write(str(i)+" ")
+f.close()
