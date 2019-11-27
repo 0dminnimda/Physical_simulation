@@ -34,18 +34,20 @@ m2=2*10**-3
 #m1 = m1**-1
 #m2 = m2**-1
 g=6.6743015*10**-11
-r = 1*10**-3
+r = 1*10**-0
 pos1, pos2=0, r
 vel1, vel2=0, 0
-step=1*10**-3
+step=1*10**0.5
 num1 = 0
-arr_v = []
+arr_v1 = []
+arr_v2 = []
 arr_p1 = []
 arr_p2 = []
 b = False
 while 1:
     #if num1 % 500 == 0 and b is True:
-    #arr_v.append([vel1,vel2])
+    arr_v1.append(vel1)
+    arr_v2.append(vel2)
     arr_p1.append(pos1)
     arr_p2.append(pos2)
     num1 += 1
@@ -70,13 +72,16 @@ print(" скорость 1 тела при столкнлвении",vel1)
 print(" скорость 2 тела при столкнлвении",vel2,"\n")
 #print(arr_v,arr_p)
 
-f = open("text1.txt", "w")
-#f.write(str(arr_v))
-#f.write("\n\n\n")
+f1 = open("text1.txt", "w")
+f2 = open("text2.txt", "w")
+f3 = open("text3.txt", "w")
+f4 = open("text4.txt", "w")
 for i in arr_p1:
-    f.write(str(i)+" ")
-f.close()
-f = open("text2.txt", "w")
-for i in arr_p2:
-    f.write(str(i)+" ")
-f.close()
+    f1.write(str(i)+" ")
+    f2.write(str(i)+" ")
+    f3.write(str(i)+" ")
+    f4.write(str(i)+" ")
+f1.close()
+f2.close()
+f3.close()
+f4.close()
