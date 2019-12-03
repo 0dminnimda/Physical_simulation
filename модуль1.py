@@ -27,10 +27,11 @@ co = 10**2.1008
 img2 = np.zeros((700//2,500,3))
 #print(img.shape[2]-img.shape[1]//6-int(pos2[2]*co))
 
-for i in range(len(pos1)):
-    img = np.zeros((700//2,1000,3))
-    cv.circle(img, (img.shape[1]//4+int(pos1[i]*co),img2.shape[1]//2),4,(0,0,255),2)
-    cv.circle(img, (img.shape[1]//4+img2.shape[1]-int(pos2[i]*co),img2.shape[1]//2),8,(0,0,255),2)
-    cv.imshow("some", img)
-    if cv.waitKey(1) & 0xFF == ord('2'):
-        break
+for i in range(len(pos1))
+#for i in range(len(pos1)):
+#    img = np.zeros((700//2,1000,3))
+#    cv.circle(img, (img.shape[1]//4+int(pos1[i]*co),img2.shape[1]//2),4,(0,0,255),2)
+#    cv.circle(img, (img.shape[1]//4+img2.shape[1]-int(pos2[i]*co),img2.shape[1]//2),8,(0,0,255),2)
+#    cv.imshow("some", img)
+#    if cv.waitKey(1) & 0xFF == ord('2'):
+#        break
