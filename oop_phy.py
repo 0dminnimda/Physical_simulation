@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import cv2 as cv
 class arr():
     def __init__(self, pos, vel, m):
         self.rad = 1*10**-4
@@ -49,13 +50,19 @@ b = arr(1*10**-2, 0, 2*10**-3)
 a.pr("pos",end=" ")
 b.pr("pos")
 co = 0
-
+at = 6
 st = time.time()
 while 1:
     som = a.main(b)
     so2 = b.main(a)
-    if co%100000 == 0:
-        print(co//100000,som[3],so2[3])
+    if co%1000 == 0:
+        #print(co//5000,som[3],so2[3])
+        img = np.zeros((200, 200, 3))
+        cv.circle(img, (int(som[3]*10**4.25),img.shape[0]//2), 5, (255,0,0), 2)
+        cv.circle(img, (int(so2[3]*10**4.25),img.shape[0]//2), 10, (0,255,0), 2)
+        cv.imshow("img",img)
+        if cv.waitKey(1) & 0xFF == ord('2'):
+            break
     if som[-1] is True or so2[-1] is True:
         print("end", som[3],so2[3])
         break
