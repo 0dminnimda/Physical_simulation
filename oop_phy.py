@@ -2,13 +2,13 @@ import numpy as np
 import time
 import cv2 as cv
 class arr():
-    def __init__(self, pos, vel, m):
-        self.rad = 1*10**-4
-        self.pos = pos
-        self.vel = vel
+    def __init__(self, pos, vel, m, step):
+        self.rad = 1*10**-2
+        self.x, self.y = pos
+        self.xv, self.yv = vel
         self.m = m
         #self.g=6.6743015*10**-11
-        self.step=1*10**-3
+        self.step=step
 
     def pr(self,*ar,**kw):
         en = "\n"
@@ -21,8 +21,8 @@ class arr():
 
     def main(self, ob):
         mm, dm = self.m, ob.m
-        mpo, dpo = self.pos, ob.pos
-        mve, dve = self.vel, ob.vel
+        mpo, dpo = self.x, ob.x
+        mve, dve = self.xv, ob.xv
         st = self.step
         fo = 0
         bo = False
@@ -36,39 +36,39 @@ class arr():
         if (maxp-minp) < self.rad:
             bo = True
         elif (maxp-minp)**2 != 0:
-            fo = (6.6743015*10**-11*mm*dm)/(maxp-minp)**2
+            fo = (mm*dm)/(maxp-minp)**2
+            #fo = (6.6743015*10**-11*mm*dm)/(maxp-minp)**2
         a = (fo/mm)*mul
         mve += a*st
         mpo += mve*st
 
-        self.pos = mpo
-        self.vel = mve
-        return fo, a, self.vel, self.pos, bo
+        self.x = mpo
+        self.xv = mve
+        return self.x, self.xv, bo
 
-a = arr(0*10**0, 0, 1*10**-3)
-b = arr(1*10**-2, 0, 2*10**-3)
-a.pr("pos",end=" ")
-b.pr("pos")
+step=1*10**2
+a = arr((0*10**0, 0), (0,0), 1*10**-10, step)
+b = arr((2*10**0, 0), (0,0), 2*10**-10, step)
+#a.pr("x",end=" ")
+#b.pr("x")
 co = 0
 at = 6
-st = time.time()
+#st = time.time()
 while 1:
     som = a.main(b)
     so2 = b.main(a)
-    if co%1000 == 0:
+    if co%1 == 0:
         #print(co//5000,som[3],so2[3])
-        img = np.zeros((200, 200, 3))
-        cv.circle(img, (int(som[3]*10**4.25),img.shape[0]//2), 5, (255,0,0), 2)
-        cv.circle(img, (int(so2[3]*10**4.25),img.shape[0]//2), 10, (0,255,0), 2)
+        img = np.zeros((500, 500, 3))
+        cv.circle(img, (int(som[0]*10**2)+img.shape[1]//2,img.shape[0]//2), 5, (255,0,0), 2)
+        cv.circle(img, (int(so2[0]*10**2)+img.shape[1]//2,img.shape[0]//2), 10, (0,255,0), 2)
         cv.imshow("img",img)
         if cv.waitKey(1) & 0xFF == ord('2'):
+            cv.destroyAllWindows()
             break
     if som[-1] is True or so2[-1] is True:
-        print("end", som[3],so2[3])
+        print(som[0],so2[0])
         break
     co += 1
 print(co*a.step)
-print(co*a.step/60)
-print(co*a.step/3600)
-print(co*a.step/(3600*24))
-print(time.time()-st)
+#print(time.time()-st)
