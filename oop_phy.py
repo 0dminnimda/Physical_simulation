@@ -21,30 +21,34 @@ class body():
 
     def main(self, ob):
         dm = ob.m
-        mpo, dpo = self.x, ob.x
-        mve = self.xv
+        mx, dx = self.x, ob.x
+        my, dy = self.y, ob.y
+        mvex = self.xv
+        mvey = self.yv
         st = self.step
         fo = 0
         bo = False
-        ar2 = np.array([mpo, dpo])
-        minp, maxp = ar2.min(), ar2.max()
+        ar = np.array([my, dy])
+        ar2 = np.array([mx, dx])
+        minx, maxx = ar2.min(), ar2.max()
+        miny, maxy = ar.min(), ar.max()
 
         mul = 1
-        if mpo == maxp:
+        if mx == maxx:
             mul = -1
 
-        if (maxp-minp) < self.rad:
+        if (maxx-minx) < self.rad:
             bo = True
             a = 0
-            mve = 0
-        elif (maxp-minp)**2 != 0:
-            a = dm/(maxp-minp)**2*mul
-            mve += a*st
+            mvex = 0
+        elif (maxx-minx)**2 != 0:
+            a = dm/(maxx-minx)**2*mul
+            mvex += a*st
         
-        mpo += mve
+        mx += mvex
 
-        self.x = mpo
-        self.xv = mve
+        self.x = mx
+        self.xv = mvex
         return self.x, self.xv, bo
 
 
@@ -60,8 +64,9 @@ path = np.zeros((720, 1000, 3))
 while 1:
     som = a.main(b)
     so2 = b.main(a)
-    cv.circle(path, (int(som[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (255,0,0), -1)
-    cv.circle(path, (int(so2[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (0,255,0), -1)
+    if co%1 == 0:
+        cv.circle(path, (int(som[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (255,0,0), -1)
+        cv.circle(path, (int(so2[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (0,255,0), -1)
     if co%100 == 0:
         img = path.copy()
         cv.circle(img, (int(som[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (255,0,0), -2)  # int(a.m*mul2)
@@ -77,6 +82,6 @@ while 1:
 #print(co*a.step)
 #print(time.time()-st)
 
-#fo = (mm*dm)/(maxp-minp)**2
-#fo = (6.6743015*10**-11*mm*dm)/(maxp-minp)**2
+#fo = (mm*dm)/(maxx-minx)**2
+#fo = (6.6743015*10**-11*mm*dm)/(maxx-minx)**2
 #a += (f/mm)*mul
