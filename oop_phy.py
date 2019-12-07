@@ -20,9 +20,10 @@ class body():
             print(self.__dict__, end=en)
 
     def main(self, ob):
-        mm, dm = self.m, ob.m
+        dm = ob.m
         mpo, dpo = self.x, ob.x
-        mve, dve = self.xv, ob.xv
+        mpo, dpo = self.x, ob.x
+        mve = self.xv
         st = self.step
         fo = 0
         bo = False
@@ -45,12 +46,12 @@ class body():
 
         self.x = mpo
         self.xv = mve
-        return self.x, self.xv, mm, bo
+        return self.x, self.xv, bo
 
 
 step=1*10**1
 tt = [body((-20*10**0, 0), (0,0), 1, step),
-     body((20*10**0, 0), (0,0), 5, step)]
+     body((20*10**0, 0), (0,0), 10, step)]
 a = tt[0]
 b = tt[1]
 
@@ -60,14 +61,10 @@ path = np.zeros((720, 1000, 3))
 while 1:
     som = a.main(b)
     so2 = b.main(a)
-    if co%1 == 0:
-        cv.circle(path, (int(som[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (255,0,0), -1)
-        cv.circle(path, (int(so2[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (0,255,0), -1)
-
+    cv.circle(path, (int(som[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (255,0,0), -1)
+    cv.circle(path, (int(so2[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (0,255,0), -1)
     if co%100 == 0:
-        
         img = path.copy()
-        #img = np.zeros((720, 1000, 3))
         cv.circle(img, (int(som[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (255,0,0), -2)  # int(a.m*mul2)
         cv.circle(img, (int(so2[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (0,255,0), -2)
         cv.imshow("img",img)
