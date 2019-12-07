@@ -3,10 +3,10 @@ import time
 import cv2 as cv
 class body():
     def __init__(self, pos, vel, m, step):
-        self.rad = 1*10**-2
+        self.rad = 1.6
         self.x, self.y = pos
         self.xv, self.yv = vel
-        self.m = m
+        self.m = m*10**-5
         #self.g=6.6743015*10**-11
         self.step=step
 
@@ -44,29 +44,24 @@ class body():
 
         self.x = mpo
         self.xv = mve
-        return self.x, self.xv, bo
+        return self.x, self.xv, mm, bo
+
 
 step=1*10**2
-a = [body((-1*10**0, 0), (0,0), 1*10**-10, step),
-     body((1*10**0, 0), (0,0), 2*10**-10, step),
-     body((1*10**0, 0), (0,0), 2*10**-10, step)]
-
+a = body((-20*10**0, 0), (0,0), 1, step)
+b = body((20*10**0, 0), (0,0), 5, step)
 #a.pr("x",end=" ")
 #b.pr("x")
 co = 0
-at = 6
-#st = time.time()
+mul = 10
+mul2 = 10**5.5
 while 1:
-    #for i in a:
-    som = a[0].main(a[1])
-    so2 = a[1].main(a[0])
-
+    som = a.main(b)
+    so2 = b.main(a)
     if co%1 == 0:
-        #print(co//5000,som[3],so2[3])
         img = np.zeros((500, 500, 3))
-        #img[:] = (255,255,255)
-        cv.circle(img, (int(som[0]*10**2)+img.shape[1]//2,img.shape[0]//2), a.m*10, (255,0,0), -2)
-        cv.circle(img, (int(so2[0]*10**2)+img.shape[1]//2,img.shape[0]//2), a.m*10, (0,255,0), -2)
+        cv.circle(img, (int(som[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (255,0,0), -2)  # int(a.m*mul2)
+        cv.circle(img, (int(so2[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (0,255,0), -2)
         cv.imshow("img",img)
         if cv.waitKey(1) & 0xFF == ord('2'):
             cv.destroyAllWindows()
@@ -75,5 +70,5 @@ while 1:
         print(som[0],so2[0])
         break
     co += 1
-print(co*a.step)
+#print(co*a.step)
 #print(time.time()-st)
