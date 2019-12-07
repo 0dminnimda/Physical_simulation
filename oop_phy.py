@@ -22,7 +22,6 @@ class body():
     def main(self, ob):
         dm = ob.m
         mpo, dpo = self.x, ob.x
-        mpo, dpo = self.x, ob.x
         mve = self.xv
         st = self.step
         fo = 0
