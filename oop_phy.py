@@ -38,9 +38,6 @@ class body():
             a = 0
             mve = 0
         elif (maxp-minp)**2 != 0:
-            #fo = (mm*dm)/(maxp-minp)**2
-            #fo = (6.6743015*10**-11*mm*dm)/(maxp-minp)**2
-            #a += (f/mm)*mul
             a = dm/(maxp-minp)**2*mul
             mve += a*st
         
@@ -59,11 +56,18 @@ b = tt[1]
 
 co = 0
 mul = 10
+path = np.zeros((720, 1000, 3))
 while 1:
     som = a.main(b)
     so2 = b.main(a)
+    if co%1 == 0:
+        cv.circle(path, (int(som[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (255,0,0), -1)
+        cv.circle(path, (int(so2[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (0,255,0), -1)
+
     if co%100 == 0:
-        img = np.zeros((720, 1000, 3))
+        
+        img = path.copy()
+        #img = np.zeros((720, 1000, 3))
         cv.circle(img, (int(som[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (255,0,0), -2)  # int(a.m*mul2)
         cv.circle(img, (int(so2[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (0,255,0), -2)
         cv.imshow("img",img)
@@ -76,3 +80,7 @@ while 1:
     co += 1
 #print(co*a.step)
 #print(time.time()-st)
+
+#fo = (mm*dm)/(maxp-minp)**2
+#fo = (6.6743015*10**-11*mm*dm)/(maxp-minp)**2
+#a += (f/mm)*mul
