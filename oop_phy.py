@@ -30,10 +30,10 @@ class body():
         st = self.step
         fo = 0
         bo = False
-        ar = np.array([my, dy])
-        ar2 = np.array([mx, dx])
-        minx, maxx = ar2.min(), ar2.max()
-        miny, maxy = ar.min(), ar.max()
+        ar = [my, dy]
+        ar2 = [mx, dx]
+        minx, maxx = min(ar2), max(ar2)
+        miny, maxy = min(ar), max(ar)
 
         mul = 1
         if mx == maxx:
@@ -74,7 +74,7 @@ class body():
 
 step=1*10**-2
 tt = [body(1, (10*10**0, 0), (0,-1*10**-4), step),
-     body(0, (0*10**0, 0), (0,0*10**-3.5), step)]
+     body(1, (0*10**0, 0), (0,0*10**-3.5), step)]
 a = tt[0]
 b = tt[1]
 a.pr()
@@ -86,7 +86,7 @@ co = 0
 path = np.zeros((720, 1000, 3))
 while 1:
     a.main(b)
-    #b.main(a)
+    b.main(a)
     if co%100 == 0:
         path = a.draw(path, (0,0,255), 1, scax, scay)
         path = b.draw(path, (255,0,0), 1, scax, scay)
