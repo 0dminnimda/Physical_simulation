@@ -24,7 +24,7 @@ class body():
 
     def m_vec(self, ob):
         def add_vectors(v, w):
-            return [vi + wi for vi, wi in zip(v, w)]
+            return [vi + wi for vi, wi in zip(v.copy(), w.copy())]
 
         def sum_of_all_vectors(vecs):
             return reduce(add_vectors, vecs)
@@ -35,8 +35,9 @@ class body():
             return b
 
         def v_vec(r, m, step):
-            r[2] *= step*ve_l(r)**3/m
-            r[3] *= step*ve_l(r)**3/m
+            a = m/ve_l(r)**2
+            r[2] = r[2]*a/ve_l(r)
+            r[3] = r[3]*a/ve_l(r)
             return r
 
         def new_vec(vec, r, m, step):
@@ -44,10 +45,13 @@ class body():
             return add_vectors(vec, vec2)
 
         def move(vec):
-            x = vec[2]-vec[0]
-            y = vec[3]-vec[1]
-            vec[0], vec[2] = vec[0]+x, vec[2]+x
-            vec[1], vec[3] = vec[1]+y, vec[3]+y
+            vec = vec.copy()
+            x = max(vec[:2])-min(vec[:2])
+            y = max(vec[1:])-min(vec[1:])
+            vec[0] += x
+            vec[2] += x
+            vec[1] += y
+            vec[3] += y
             #for i in range(len(vec)):
             #    if i%2==0:
             #        vec[i] += x
@@ -111,7 +115,7 @@ class body():
         return path
 
 
-step=1*10**0
+step=1*10**-2
 tt = [body(1, (10*10**0, 0), (0,-1*10**-1), [], step),
      body(1,  (0*10**0, 0), (0,0*10**-3.5), [], step)]
 a = tt[0]
