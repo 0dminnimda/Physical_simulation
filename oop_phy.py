@@ -2,8 +2,8 @@ import numpy as np
 import time
 import cv2 as cv
 class body():
-    def __init__(self, pos, vel, m, step):
-        self.rad = 1.6
+    def __init__(self, m, pos, vel, step):
+        #self.rad = 0
         self.x, self.y = pos
         self.xv, self.yv = vel
         self.m = m*10**-5
@@ -23,8 +23,8 @@ class body():
         dm = ob.m
         mx, dx = self.x, ob.x
         my, dy = self.y, ob.y
-        mvex = self.xv
-        mvey = self.yv
+        vex = self.xv
+        vey = self.yv
         st = self.step
         fo = 0
         bo = False
@@ -36,45 +36,80 @@ class body():
         mul = 1
         if mx == maxx:
             mul = -1
-
-        if (maxx-minx) < self.rad:
-            bo = True
-            a = 0
-            mvex = 0
-        elif (maxx-minx)**2 != 0:
+        #if (maxx-minx) <= self.rad:
+        #    bo = True
+        a = 0
+        if (maxx-minx) != 0:
             a = dm/(maxx-minx)**2*mul
-            mvex += a*st
-        
-        mx += mvex
+        vex += a*st
+        mx += vex
+
+        mul2 = 1
+        if my == maxy:
+            mul2 = -1
+        #if (maxy-miny) <= self.rad:
+        #    bo = True
+        a = 0
+        if (maxy-miny) != 0:
+            a = dm/(maxy-miny)**2*mul2
+        vey += a*st
+        my += vey
 
         self.x = mx
-        self.xv = mvex
-        return self.x, self.xv, bo
+        self.xv = vex
+        self.y = my
+        self.yv = vey
+        #return mx, my, bo
+
+    def draw(self, co, path, col, mul):
+        px, py = self.x, self.y
+        if co%1 == 0:
+            hx, hy = path.shape[1]/2 + px*mul, path.shape[0]/2 + py*mul
+            #print(px, py)
+            cv.circle(path, (int(hx), int(hy)), 1, col)
+
+        if co%100 == 0:
+            img = path.copy()
+            hx, hy = path.shape[1]/2 + px*mul, path.shape[0]/2 + py*mul
+            cv.circle(img, (int(hx), int(hy)), 10, col, -1)
+            cv.imshow("img",img)
+
+        return path
 
 
 step=1*10**1
-tt = [body((-20*10**0, 0), (0,0), 1, step),
-     body((20*10**0, 0), (0,0), 10, step)]
+tt = [body(1, (-20*10**0, 0), (0,0), step),
+     body(10, (20*10**0, 0), (0,0), step)]
 a = tt[0]
 b = tt[1]
+a.pr()
+b.pr()
 
 co = 0
 mul = 10
 path = np.zeros((720, 1000, 3))
 while 1:
-    som = a.main(b)
-    so2 = b.main(a)
-    if co%1 == 0:
-        cv.circle(path, (int(som[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (255,0,0), -1)
-        cv.circle(path, (int(so2[0]*mul)+path.shape[1]//2,path.shape[0]//2), 1, (0,255,0), -1)
+    a.main(b)
+    b.main(a)
+    path = a.draw(co, path, (0,0,255), mul)
+    path = b.draw(co, path, (0,255,0), mul)
     if co%100 == 0:
-        img = path.copy()
-        cv.circle(img, (int(som[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (255,0,0), -2)  # int(a.m*mul2)
-        cv.circle(img, (int(so2[0]*mul)+img.shape[1]//2,img.shape[0]//2), 7, (0,255,0), -2)
-        cv.imshow("img",img)
         if cv.waitKey(1) & 0xFF == ord('2'):
             cv.destroyAllWindows()
             break
+
+    #print(som,so2)
+    #if co%1 == 0:
+    #    cv.circle(path, (int(som[0]*mul)+path.shape[0]//2, int(som[1]*mul)+path.shape[1]//2), 1, (255,0,0), -1)
+    #    cv.circle(path, (int(som[0]*mul)+path.shape[0]//2, int(som[1]*mul)+path.shape[1]//2), 1, (0,255,0), -1)
+    #if co%100 == 0:
+    #    img = path.copy()
+    #    cv.circle(img, (int(som[0]*mul)+path.shape[0]//2, int(som[1]*mul)+path.shape[1]//2), 7, (255,0,0), -1)  # int(a.m*mul2)
+    #    cv.circle(img, (int(som[0]*mul)+path.shape[0]//2, int(som[1]*mul)+path.shape[1]//2), 7, (0,255,0), -1)
+    #    cv.imshow("img",img)
+    #    if cv.waitKey(1) & 0xFF == ord('2'):
+    #        cv.destroyAllWindows()
+    #        break
     #if som[-1] is True or so2[-1] is True:
         #print(som[0],so2[0])
         #break
