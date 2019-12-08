@@ -1,6 +1,8 @@
 import numpy as np
 import time
 import cv2 as cv
+
+
 class body():
     def __init__(self, m, pos, vel, step):
         self.rad = 2
@@ -62,35 +64,36 @@ class body():
         #return mx, my, bo
         pass
 
-    def draw(self, path, col, r, mul, mul2):
+    def draw(self, path, col, r, scax, scay):
         px, py = self.x, self.y
-        hx, hy = path.shape[1]/2 + px*mul, path.shape[0]/2 + py*mul2
+        hx, hy = path.shape[1]/2 + px*scax, path.shape[0]/2 + py*scay
         cv.circle(path, (int(hx), int(hy)), r, col, -1)
 
         return path
 
 
-step=1*10**1
-tt = [body(10, (100*10**0, 0), (0,-1*10**-4), step),
-     body(40, (-100*10**0, 0), (0,0), step)]
+step=1*10**-2
+tt = [body(1, (10*10**0, 0), (0,-1*10**-4), step),
+     body(0, (0*10**0, 0), (0,0*10**-3.5), step)]
 a = tt[0]
 b = tt[1]
 a.pr()
 b.pr()
 
+
+scax = scay = 10
 co = 0
-mul = mul2 = 5/10
 path = np.zeros((720, 1000, 3))
 while 1:
     a.main(b)
-    b.main(a)
-    if co%10 == 0:
-        path = a.draw(path, (0,0,255), 1, mul, mul2)
-        path = b.draw(path, (255,0,0), 1, mul, mul2)
+    #b.main(a)
+    if co%100 == 0:
+        path = a.draw(path, (0,0,255), 1, scax, scay)
+        path = b.draw(path, (255,0,0), 1, scax, scay)
     
     if co%1000 == 0:
-        img = a.draw(path.copy(), (0,0,255), 7, mul, mul2)
-        img = b.draw(img, (255,0,0), 7, mul, mul2)
+        img = a.draw(path.copy(), (0,0,255), 7, scax, scay)
+        img = b.draw(img, (255,0,0), 7, scax, scay)
         cv.imshow("img", img)
         if cv.waitKey(1) & 0xFF == ord('2'):
             cv.destroyAllWindows()
