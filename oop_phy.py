@@ -62,9 +62,8 @@ class body():
         #return mx, my, bo
         pass
 
-    def draw(self, co, path, col, r, mul, mul2):
+    def draw(self, path, col, r, mul, mul2):
         px, py = self.x, self.y
-        #if co%10 == 0:
         hx, hy = path.shape[1]/2 + px*mul, path.shape[0]/2 + py*mul2
         cv.circle(path, (int(hx), int(hy)), r, col, -1)
 
@@ -85,21 +84,18 @@ path = np.zeros((720, 1000, 3))
 while 1:
     a.main(b)
     b.main(a)
-    #img = path.copy()
     if co%10 == 0:
-        path = a.draw(co, path, (0,0,255), 1, mul, mul2)
-        path = b.draw(co, path, (255,0,0), 1, mul, mul2)
+        path = a.draw(path, (0,0,255), 1, mul, mul2)
+        path = b.draw(path, (255,0,0), 1, mul, mul2)
     
     if co%1000 == 0:
-        img = a.draw(co, path.copy(), (0,0,255), 7, mul, mul2)
-        img = b.draw(co, img, (255,0,0), 7, mul, mul2)
+        img = a.draw(path.copy(), (0,0,255), 7, mul, mul2)
+        img = b.draw(img, (255,0,0), 7, mul, mul2)
         cv.imshow("img", img)
         if cv.waitKey(1) & 0xFF == ord('2'):
             cv.destroyAllWindows()
             break
     co += 1
-#print(co*a.step)
-#print(time.time()-st)
 
 #fo = (mm*dm)/(maxx-minx)**2
 #fo = (6.6743015*10**-11*mm*dm)/(maxx-minx)**2
