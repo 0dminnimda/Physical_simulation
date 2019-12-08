@@ -21,6 +21,16 @@ class body():
         else:
             print(self.__dict__, end=en)
 
+    def vec(self, ob):
+        def ve_l(a):
+            return np.linalg.norm([a[2]-a[0], a[3]-a[1]])
+
+        def a_vec(r, m):
+            r[2] *= (ve_l(r)**3/m)
+            r[3] *= (ve_l(r)**3/m)
+            return r
+
+
     def main(self, ob):
         dm = ob.m
         mx, dx = self.x, ob.x
