@@ -4,10 +4,11 @@ import cv2 as cv
 
 
 class body():
-    def __init__(self, m, pos, vel, step):
+    def __init__(self, m, pos, vel, v_vec, step):
         self.rad = 2
         self.x, self.y = pos
         self.xv, self.yv = vel
+        self.v_vec = v_vec
         self.m = m*10**-5
         #self.g=6.6743015*10**-11
         self.step=step
@@ -25,10 +26,31 @@ class body():
         def ve_l(a):
             return np.linalg.norm([a[2]-a[0], a[3]-a[1]])
 
-        def a_vec(r, m):
-            r[2] *= (ve_l(r)**3/m)
-            r[3] *= (ve_l(r)**3/m)
+        def v_vec(r, m, step):
+            r[2] *= step*ve_l(r)**3/m
+            r[3] *= step*ve_l(r)**3/m
             return r
+
+        def new_vec(vec, r, m, step):
+            vec2 = v_vec(r, m, step)
+            return add_vectors(vec, vec2)
+
+        def move(vec):
+            x = vec[2]-vec[0]
+            y = vec[3]-vec[1]
+            vec[0], vec[2] = vec[0]+x, vec[2]+x
+            vec[1], vec[3] = vec[1]+y, vec[3]+y
+            #for i in range(len(vec)):
+            #    if i%2==0:
+            #        vec[i] += x
+            #    elif i%2==1:
+            #        vec[i] += y
+            return vec
+
+        vec = self.v_vec
+        r = [self.x, self.y, ob.x, ob.y]
+        vec = new_vec(vec, r, ob.m, self.step)
+        self.v_vec = move(vec)
 
 
     def main(self, ob):
@@ -54,7 +76,7 @@ class body():
         elif (maxx-minx) != 0:
             a = dm/(maxx-minx)**2*mul
         vex += a*st
-        mx += vex
+        mx += vex*st
 
         mul2 = 1
         if my == maxy:
@@ -65,7 +87,7 @@ class body():
         elif (maxy-miny) != 0:
             a2 = dm/(maxy-miny)**2*mul2
         vey += a2*st
-        my += vey
+        my += vey*st
 
         self.x = mx
         self.xv = vex
@@ -82,8 +104,8 @@ class body():
         return path
 
 
-step=1*10**-2
-tt = [body(1, (10*10**0, 0), (0,-1*10**-4), step),
+step=1*10**0
+tt = [body(1, (10*10**0, 0), (0,-1*10**-3), step),
      body(1, (0*10**0, 0), (0,0*10**-3.5), step)]
 a = tt[0]
 b = tt[1]
