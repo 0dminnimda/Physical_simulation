@@ -92,40 +92,45 @@ class body():
         #return mx, my, bo
         pass
 
-    def draw(self, path, col, r, scax, scay):
+    def draw(self, path, col, r, scax, scay, indentx, indenty):
         px, py = self.x, self.y
-        hx, hy = path.shape[1]/2 + px*scax, path.shape[0]/2 + py*scay
+        hx = path.shape[1]/2 + px*scax + path.shape[1]*indentx/100
+        hy = path.shape[0]/2 + py*scay + path.shape[0]*indenty/100
         cv.circle(path, (int(hx), int(hy)), r, col, -1)
         return path
 
 
-step=1*10**-6.5
-#a = body(1, (10*10**0, 0), (0,-1*10**-1), [], step)
-#b = body(1,  (0*10**0, 0), (0,0*10**-3.5), [], step)
-a = body(1, [-2,0], [0,0], step)
-b = body(1, [2,0], [0,1*10**-3.75], step)
+step=1*10**-6
 
-#a.calc(b)
-#a.move()
+xp1, yp1 = -10, 0
+xp2, yp2 = 0, 0
 
-scax = scay = 20
+xv1, yv1 = 0, 1*10**-3
+xv2, yv2 = 0, 0
+
+m1 = 1
+m2 = 10
+
+a = body(m1, [xp1, yp1], [xv1, yv1], step)
+b = body(m2, [xp2, yp2], [xv2, yv2], step)
+
+scax = scay = 10
+indx, indy = 0, -25  # percent
 co = 0
-path = np.zeros((720, 1000, 3))
+path = np.zeros((790, 1300, 3))
 while 1:
     a.calc(b)
     a.move()
     b.calc(a)
     b.move()
-    #a.m_vec(b)
-    #b.m_vec(a)
 
-    if co%100 == 0:
-        path = a.draw(path, (0,0,255), 1, scax, scay)
-        path = b.draw(path, (255,0,0), 1, scax, scay)
+    if co%1 == 0:
+        path = a.draw(path, (0,0,255), 1, scax, scay, indx, indy)
+        path = b.draw(path, (255,0,0), 1, scax, scay, indx, indy)
     
     if co%1000 == 0:
-        img = a.draw(path.copy(), (0,0,255), 4, scax, scay)
-        img = b.draw(img, (255,0,0), 4, scax, scay)
+        img = a.draw(path.copy(), (0,0,255), 6, scax, scay, indx, indy)
+        img = b.draw(img, (255,0,0), 6, scax, scay, indx, indy)
         cv.imshow("img", img)
         if cv.waitKey(1) & 0xFF == ord('2'):
             cv.destroyAllWindows()
