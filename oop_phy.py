@@ -4,6 +4,21 @@ import cv2 as cv
 from functools import reduce
 
 
+def add_vec(v, w):
+    return [vi + wi for vi, wi in zip(v, w)]
+
+def sum_vec(*vecs):
+    return reduce(add_vec, vecs)
+
+def ve_l(a):
+    return np.linalg.norm(a)
+
+def v_vec(r,m,step):
+    k = ve_l(r)**3/m
+    r[0]=r[0]/k*step
+    r[1]=r[1]/k*step
+    return r
+
 class body():
     def __init__(self, m, pos, vec, step):
         #self.rad = 2
@@ -24,20 +39,6 @@ class body():
             print(self.__dict__, end=en)
 
     def calc(self, ob):
-        def add_vec(v, w):
-            return [vi + wi for vi, wi in zip(v, w)]
-
-        def sum_vec(*vecs):
-            return reduce(add_vec, vecs)
-
-        def ve_l(a):
-            return np.linalg.norm(a)
-
-        def v_vec(r,m,step):
-            k = ve_l(r)**3/m
-            r[0]=r[0]/k*step
-            r[1]=r[1]/k*step
-            return r
 
         mx, my = self.x, self.y
         dx, dy = ob.x, ob.y
@@ -102,20 +103,20 @@ class body():
 
 step=1*10**-6
 
-xp1, yp1 = -10, 0
-xp2, yp2 = 0, 0
+xp1, yp1 = 0,0
+xp2, yp2 = -10, 0
 
-xv1, yv1 = 0, 1*10**-3
-xv2, yv2 = 0, 0
+xv1, yv1 = -0*10**-4, 1*10**-3.5
+xv2, yv2 = 1*10**-4, 0
 
 m1 = 1
-m2 = 10
+m2 = 1
 
 a = body(m1, [xp1, yp1], [xv1, yv1], step)
 b = body(m2, [xp2, yp2], [xv2, yv2], step)
 
 scax = scay = 10
-indx, indy = 0, -25  # percent
+indx, indy = 0, -40  # percent
 co = 0
 path = np.zeros((790, 1300, 3))
 while 1:
@@ -133,6 +134,7 @@ while 1:
         img = b.draw(img, (255,0,0), 6, scax, scay, indx, indy)
         cv.imshow("img", img)
         if cv.waitKey(1) & 0xFF == ord('2'):
+            cv.imwrite("physics_sim.png", img)
             cv.destroyAllWindows()
             break
     co += 1
