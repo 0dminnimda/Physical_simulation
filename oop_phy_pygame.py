@@ -102,6 +102,9 @@ b = body(m2, [xp2, yp2], [xv2, yv2], step)
 c = body(m3, [xp3, yp3], [xv3, yv3], step)
 d = body(m4, [xp4, yp4], [xv4, yv4], step)
 
+surf = pygame.Surface((5, 5))
+surf.fill((255,0,255))
+
 # печать всех значений self
 a.pr()
 b.pr()
@@ -139,7 +142,11 @@ while 1:
         path = c.draw(path, (0,255,0), r, scax, scay, indx, indy)
         path = d.draw(path, (255,255,0), r, scax, scay, indx, indy)
 
+        #if co%100:
+        
+        path.blit(surf,(int(a.x), int(a.y)))
         pygame.display.update()
+
         # path.fill((0,0,0))
 
     # добавление шага
