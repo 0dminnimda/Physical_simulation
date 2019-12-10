@@ -72,7 +72,7 @@ class body():
         # положение центра фигуры
         hx = w/2 + px*scax + w*indentx/100
         hy = h/2 + py*scay + h*indenty/100
-        pygame.draw.circle(path, col, (int(hx), int(hy)), r)
+        pygame.draw.circle(path, col, (int(hx), int(hy)), r, r)
         return path
 
 # шаг времени
@@ -108,6 +108,8 @@ b.pr()
 c.pr()
 d.pr()
 
+# радиус тела при отображении
+r = 1
 # масштаб
 scax = scay = 20
 # сдвиг, в % от всего изображения
@@ -132,10 +134,10 @@ while 1:
 
     # раз в _ шагов отображаются все тела
     if co%50 == 0:
-        path = a.draw(path, (0,0,255), 0, scax, scay, indx, indy)
-        path = b.draw(path, (255,0,0), 0, scax, scay, indx, indy)
-        path = c.draw(path, (0,255,0), 0, scax, scay, indx, indy)
-        path = d.draw(path, (255,255,0), 0, scax, scay, indx, indy)
+        path = a.draw(path, (0,0,255), r, scax, scay, indx, indy)
+        path = b.draw(path, (255,0,0), r, scax, scay, indx, indy)
+        path = c.draw(path, (0,255,0), r, scax, scay, indx, indy)
+        path = d.draw(path, (255,255,0), r, scax, scay, indx, indy)
 
         pygame.display.update()
         # path.fill((0,0,0))
