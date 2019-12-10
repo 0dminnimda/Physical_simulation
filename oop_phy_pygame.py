@@ -67,8 +67,7 @@ class body():
     # отрисовка положения тела
     def draw(self, path, col, r, scax, scay, indentx, indenty):
         # получение разрешения окна
-        su = pygame.display.get_surface()
-        w, h = su.get_width(), su.get_height()
+        w, h = path.get_width(), path.get_height()
         px, py = self.x, self.y
         # положение центра фигуры
         hx = w/2 + px*scax + w*indentx/100
@@ -117,8 +116,12 @@ indx, indy = 0, 0 # percent
 co = 0
 pygame.init()
 path = pygame.display.set_mode((1500, 750))
+pygame.display.set_caption("Physical simulation")
 
 while 1:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            break
     # симуляция взаимействия
     # на тело _ действуют тела (_, _ ... _, _)
     # и оно реагирует ( движется или стоит)
@@ -129,10 +132,10 @@ while 1:
 
     # раз в _ шагов отображаются все тела
     if co%50 == 0:
-        path = a.draw(path, (0,0,255), 1, scax, scay, indx, indy)
-        path = b.draw(path, (255,0,0), 1, scax, scay, indx, indy)
-        path = c.draw(path, (0,255,0), 1, scax, scay, indx, indy)
-        path = d.draw(path, (255,255,0), 1, scax, scay, indx, indy)
+        path = a.draw(path, (0,0,255), 0, scax, scay, indx, indy)
+        path = b.draw(path, (255,0,0), 0, scax, scay, indx, indy)
+        path = c.draw(path, (0,255,0), 0, scax, scay, indx, indy)
+        path = d.draw(path, (255,255,0), 0, scax, scay, indx, indy)
 
         pygame.display.update()
         # path.fill((0,0,0))
