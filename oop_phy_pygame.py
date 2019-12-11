@@ -18,10 +18,10 @@ def ve_l(a):
     return np.linalg.norm(a)
 
 # вычисл вект скорости напрпр к др телу
-def v_vec(r,m,step):
+def v_vec(r, m, step):
     k = ve_l(r)**3/m
-    r[0]=r[0]/k*step
-    r[1]=r[1]/k*step
+    r[0] = r[0]/k*step
+    r[1] = r[1]/k*step
     return r
 
 # класс физического тела
@@ -31,7 +31,7 @@ class body():
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
         self.vec = vec # вектор {x,y}
-        self.step=step # шаг времени
+        self.step = step # шаг времени
         self.col = col # цвет отображения тел
         self.rpath = rp # радиус отрисовки тел
         self.r = r # радиус отрисовки тел
@@ -59,8 +59,7 @@ class body():
             if (ma.fabs(mx-dx) > rad or ma.fabs(my-dy) > rad):
                 # вект скорости, вызванный ускор
                 # или же силой другого тела
-                add_vec = v_vec([-mx+dx, -my+dy],
-                ob.m, self.step)
+                add_vec = v_vec([-mx+dx, -my+dy], ob.m, self.step)
                 # сложение нового и старого вект
                 self.vec = sum_vec(add_vec, self.vec)
 
@@ -83,12 +82,11 @@ class body():
             # положение центра фигуры
             hx = w/2 + px*scax + w*indentx/100
             hy = h/2 + py*scay + h*indenty/100
-            pygame.draw.circle(path, col, (int(hx),
-            int(hy)), r, r)
+            pygame.draw.circle(path, col, (int(hx), int(hy)), r)
         return path
 
 # шаг времени
-step=1*10**-7
+step = 1*10**-7
 
 # положение тел
 xp1, yp1 = -3, 0
@@ -102,10 +100,10 @@ xyp3 = [xp3, yp3]
 xyp4 = [xp4, yp4]
 
 # нач скорость
-xv1, yv1 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
-xv2, yv2 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
-xv3, yv3 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
-xv4, yv4 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
+xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 xyv1 = [xv1, yv1]
 xyv2 = [xv2, yv2]
@@ -113,19 +111,19 @@ xyv3 = [xv3, yv3]
 xyv4 = [xv4, yv4]
 
 # масса
-m1 = ra.randint(3,7)
-m2 = ra.randint(3,7)
-m3 = ra.randint(3,7)
-m4 = ra.randint(3,7)
+m1 = ra.randint(3, 7)
+m2 = ra.randint(3, 7)
+m3 = ra.randint(3, 7)
+m4 = ra.randint(3, 7)
 
 # цвет тел
-col1 = (0,0,255)
-col2 = (255,0,0)
-col3 = (0,255,0)
-col4 = (255,255,0)
+col1 = (0, 0, 255)
+col2 = (255, 0, 0)
+col3 = (0, 255, 0)
+col4 = (255, 255, 0)
 
 # радиус отрисовки тел
-r1 = r2 = r3 = r4 = 5
+r1 = r2 = r3 = r4 = 6
 
 # радиус пути
 rpath = 0
