@@ -142,7 +142,7 @@ d = body(m4, xyp4, xyv4, step, col4, r4, rpath, draw4)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
-abod =[a,b,c,d]
+abod = [a, b, c, d]
 
 # печать всех значений self для всех тел
 for i in abod:
