@@ -92,26 +92,16 @@ class body():
 step = 1*10**-6.75
 
 # положение тел
-xp1, yp1 = -3, 0
-xp2, yp2 = 3, 0
+xp1, yp1 = -4, 4
+xp2, yp2 = 4, 4
 xp3, yp3 = 4, -4
 xp4, yp4 = -4, -4
-
-xyp1 = [xp1, yp1]
-xyp2 = [xp2, yp2]
-xyp3 = [xp3, yp3]
-xyp4 = [xp4, yp4]
 
 # нач скорость
 xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-
-xyv1 = [xv1, yv1]
-xyv2 = [xv2, yv2]
-xyv3 = [xv3, yv3]
-xyv4 = [xv4, yv4]
 
 # масса
 m1 = ra.randint(3, 7)
@@ -138,10 +128,10 @@ draw3 = 1
 draw4 = 1
 
 # создание экземпляра класса
-a = body(m1, xyp1, xyv1, step, col1, r1, rpath, draw1)
-b = body(m2, xyp2, xyv2, step, col2, r2, rpath, draw2)
-c = body(m3, xyp3, xyv3, step, col3, r3, rpath, draw3)
-d = body(m4, xyp4, xyv4, step, col4, r4, rpath, draw4)
+a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2)
+c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3)
+d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
@@ -161,12 +151,33 @@ co = 0
 pygame.init()
 path = pygame.display.set_mode((1500, 750), RESIZABLE)  # FULLSCREEN)
 
+while 1:
+    event = pygame.event.wait()
+    if event.type == KEYDOWN and event.key == K_SPACE:
+        break
+
 run = True
 while run:
     # условия окончания программы
     for event in pygame.event.get():
-        if event.type==KEYDOWN and event.key == K_ESCAPE:
-            run = False
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                run = False
+            elif event.key == K_r:
+                xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+                xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+                xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+                xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+                m1 = ra.randint(3, 7)
+                m2 = ra.randint(3, 7)
+                m3 = ra.randint(3, 7)
+                m4 = ra.randint(3, 7)
+                a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1)
+                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2)
+                c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3)
+                d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
+                abod = [a, b, c, d]
+                path.fill((0, 0, 0))
  
     # цикл перечисляет все элементы
     # массива с телами
