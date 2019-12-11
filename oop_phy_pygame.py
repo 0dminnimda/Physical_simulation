@@ -18,20 +18,23 @@ def ve_l(a):
     return np.linalg.norm(a)
 
 # вычисл вект скорости напрпр к др телу
-def v_vec(r, m, step):
+def v_vec(r,m,step):
     k = ve_l(r)**3/m
-    r[0] = r[0]/k*step
-    r[1] = r[1]/k*step
+    r[0]=r[0]/k*step
+    r[1]=r[1]/k*step
     return r
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step):
+    def __init__(self, m, pos, vec, step, col, r, dr):
         self.rad = 4*10**-1 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
         self.vec = vec # вектор {x,y}
         self.step=step # шаг времени
+        self.col = col # цвет отображения тел
+        self.r = r # радиус отрисовки тел
+        self.dr_bo = bool(dr) # рисовать ли тело
 
     # печать значений объекта класса
     def pr(self,*ar,**kw):
@@ -55,7 +58,8 @@ class body():
             if (ma.fabs(mx-dx) > rad or ma.fabs(my-dy) > rad):
                 # вект скорости, вызванный ускор
                 # или же силой другого тела
-                add_vec = v_vec([-mx+dx, -my+dy], ob.m, self.step)
+                add_vec = v_vec([-mx+dx, -my+dy],
+                ob.m, self.step)
                 # сложение нового и старого вект
                 self.vec = sum_vec(add_vec, self.vec)
 
@@ -65,89 +69,112 @@ class body():
         self.y += vec[1]
 
     # отрисовка положения тела
-    def draw(self, path, col, r, scax, scay, indentx, indenty):
-        # получение разрешения окна
-        w, h = path.get_width(), path.get_height()
-        px, py = self.x, self.y
-        # положение центра фигуры
-        hx = w/2 + px*scax + w*indentx/100
-        hy = h/2 + py*scay + h*indenty/100
-        pygame.draw.circle(path, col, (int(hx), int(hy)), r, r)
+    def draw(self, path, scax, scay, indentx, indenty):
+        if self.dr_bo is True:
+            # получение разрешения окна
+            w, h = path.get_width(), path.get_height()
+            px, py = self.x, self.y
+            col = self.col
+            r = self.r
+            # положение центра фигуры
+            hx = w/2 + px*scax + w*indentx/100
+            hy = h/2 + py*scay + h*indenty/100
+            pygame.draw.circle(path, col, (int(hx),
+            int(hy)), r, r)
         return path
 
 # шаг времени
-step = 1*10**-7
+step=1*10**-9
 
 # положение тел
-xp1, yp1 = 4, 4
-xp2, yp2 = -4, 4
+xp1, yp1 = -3, 0
+xp2, yp2 = 3, 0
 xp3, yp3 = 4, -4
 xp4, yp4 = -4, -4
 
+xyp1 = [xp1, yp1]
+xyp2 = [xp2, yp2]
+xyp3 = [xp3, yp3]
+xyp4 = [xp4, yp4]
+
 # нач скорость
-xv1, yv1 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
-xv2, yv2 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
+xv1, yv1 = 0, 0#ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
+xv2, yv2 = 0, 5*10**-5#ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
 xv3, yv3 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
 xv4, yv4 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
 
+xyv1 = [xv1, yv1]
+xyv2 = [xv2, yv2]
+xyv3 = [xv3, yv3]
+xyv4 = [xv4, yv4]
+
 # масса
-m1 = ra.randint(3,7)
-m2 = ra.randint(3,7)
+m1 = 1000#ra.randint(3,7)
+m2 = 0.01#ra.randint(3,7)
 m3 = ra.randint(3,7)
 m4 = ra.randint(3,7)
 
-# создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], step)
-b = body(m2, [xp2, yp2], [xv2, yv2], step)
-c = body(m3, [xp3, yp3], [xv3, yv3], step)
-d = body(m4, [xp4, yp4], [xv4, yv4], step)
+# цвет тел
+col1 = (0,0,255)
+col2 = (255,0,0)
+col3 = (0,255,0)
+col4 = (255,255,0)
 
-surf = pygame.Surface((5, 5))
-surf.fill((255,0,255))
-
-# печать всех значений self
-a.pr()
-b.pr()
-c.pr()
-d.pr()
-
-# радиус тела при отображении
+# радиус отрисовки тел
 r = 1
+
+# отрисовка тел
+draw1 = 1
+draw2 = 1
+draw3 = 1
+draw4 = 1
+
+# создание экземпляра класса
+a = body(m1, xyp1, xyv1, step, col1, r, draw1)
+b = body(m2, xyp2, xyv2, step, col2, r, draw2)
+c = body(m3, xyp3, xyv3, step, col3, r, draw3)
+d = body(m4, xyp4, xyv4, step, col4, r, draw4)
+
+# массив со всеми телами, что
+# будут использоваться в симуляции
+abod =[a,b,c]
+
+# печать всех значений self для всех тел
+for i in abod:
+    i.pr()
+
 # масштаб
-scax = scay = 20
+scax = scay = 30
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 # шаг
 co = 0
+
 pygame.init()
 path = pygame.display.set_mode((1500, 750))
-pygame.display.set_caption("Physical simulation")
 
 while 1:
+    # условия окончания программы
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             break
-    # симуляция взаимействия
-    # на тело _ действуют тела (_, _ ... _, _)
-    # и оно реагирует ( движется или стоит)
-    a.calc(b, c, d)
-    b.calc(a, c, d)
-    c.calc(a, b, d)
-    d.calc(a, b, d)
+ 
+    # цикл перечисляет все элементы
+    # массива с телами
+    for i in range(len(abod)):
+        other = abod[:]
+        del other[i]
+        # симуляция взаимействия
+        # на тело _ действуют тела (_, _ ... _, _)
+        # и оно реагирует ( движется или стоит)
+        abod[i].calc(*other)
 
-    # раз в _ шагов отображаются все тела
-    if co%50 == 0:
-        path = a.draw(path, (0,0,255), r, scax, scay, indx, indy)
-        path = b.draw(path, (255,0,0), r, scax, scay, indx, indy)
-        path = c.draw(path, (0,255,0), r, scax, scay, indx, indy)
-        path = d.draw(path, (255,255,0), r, scax, scay, indx, indy)
-
-        #if co%100:
-        
-        path.blit(surf,(int(a.x), int(a.y)))
-        pygame.display.update()
-
-        # path.fill((0,0,0))
+        # раз в _ шагов отображаются все тела
+        if co%10 == 0:
+            path = abod[i].draw(path, scax, scay, indx, indy)
+        if co%100 == 0:
+            pygame.display.update()
+            #path.fill((0,0,0))
 
     # добавление шага
     co += 1
