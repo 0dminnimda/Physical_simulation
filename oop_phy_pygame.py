@@ -26,14 +26,14 @@ def v_vec(r, m, step):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, rp, dr):
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr):
         self.rad = 4*10**-1 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
         self.vec = vec # вектор {x,y}
         self.step = step # шаг времени
         self.col = col # цвет отображения тел
-        self.rpath = rp # радиус отрисовки тел
+        self.r_path = r_path # радиус отрисовки тел
         self.r = r # радиус отрисовки тел
         self.dr_bo = bool(dr) # рисовать ли тело
 
@@ -69,24 +69,25 @@ class body():
         self.y += vec[1]
 
     # отрисовка положения тела
-    def draw(self, path, scax, scay, indentx, indenty, type=0):
+    def draw(self, path, scax, scay, indentx, indenty, type=1):
         if self.dr_bo is True:
             # получение разрешения окна
             w, h = path.get_width(), path.get_height()
             px, py = self.x, self.y
             col = self.col
-            if type == 0:
-                r = self.rpath
-            elif type == 1:
+            if type == 1:
+                r = self.r_path
+                type = r
+            elif type == 0:
                 r = self.r
             # положение центра фигуры
             hx = w/2 + px*scax + w*indentx/100
             hy = h/2 + py*scay + h*indenty/100
-            pygame.draw.circle(path, col, (int(hx), int(hy)), r)
+            pygame.draw.circle(path, col, (int(hx), int(hy)), r, type)
         return path
 
 # шаг времени
-step = 1*10**-7
+step = 1*10**-10
 
 # положение тел
 xp1, yp1 = -3, 0
@@ -126,7 +127,7 @@ col4 = (255, 255, 0)
 r1 = r2 = r3 = r4 = 6
 
 # радиус пути
-rpath = 0
+rpath = 1
 
 # отрисовка тел
 draw1 = 1
@@ -185,7 +186,7 @@ while 1:
         img = path.copy()
         for i in range(len(abod)):
             # рисуем каждое тело
-            path = abod[i].draw(path, scax, scay, indx, indy, 1)
+            path = abod[i].draw(path, scax, scay, indx, indy, 0)
 
         pygame.display.update()
         path.blit(img, (0,0))
