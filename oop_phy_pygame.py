@@ -26,13 +26,14 @@ def v_vec(r,m,step):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, dr):
+    def __init__(self, m, pos, vec, step, col, r, rp, dr):
         self.rad = 4*10**-1 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
         self.vec = vec # вектор {x,y}
         self.step=step # шаг времени
         self.col = col # цвет отображения тел
+        self.rpath = rp # радиус отрисовки тел
         self.r = r # радиус отрисовки тел
         self.dr_bo = bool(dr) # рисовать ли тело
 
@@ -69,13 +70,16 @@ class body():
         self.y += vec[1]
 
     # отрисовка положения тела
-    def draw(self, path, scax, scay, indentx, indenty):
+    def draw(self, path, scax, scay, indentx, indenty, type=0):
         if self.dr_bo is True:
             # получение разрешения окна
             w, h = path.get_width(), path.get_height()
             px, py = self.x, self.y
             col = self.col
-            r = self.r
+            if type == 0:
+                r = self.rpath
+            elif type == 1:
+                r = self.r
             # положение центра фигуры
             hx = w/2 + px*scax + w*indentx/100
             hy = h/2 + py*scay + h*indenty/100
@@ -121,7 +125,10 @@ col3 = (0,255,0)
 col4 = (255,255,0)
 
 # радиус отрисовки тел
-r = 1
+r1 = r2 = r3 = r4 = 5
+
+# радиус пути
+rpath = 0
 
 # отрисовка тел
 draw1 = 1
@@ -130,10 +137,10 @@ draw3 = 1
 draw4 = 1
 
 # создание экземпляра класса
-a = body(m1, xyp1, xyv1, step, col1, r, draw1)
-b = body(m2, xyp2, xyv2, step, col2, r, draw2)
-c = body(m3, xyp3, xyv3, step, col3, r, draw3)
-d = body(m4, xyp4, xyv4, step, col4, r, draw4)
+a = body(m1, xyp1, xyv1, step, col1, r1, rpath, draw1)
+b = body(m2, xyp2, xyv2, step, col2, r2, rpath, draw2)
+c = body(m3, xyp3, xyv3, step, col3, r3, rpath, draw3)
+d = body(m4, xyp4, xyv4, step, col4, r4, rpath, draw4)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
@@ -165,16 +172,26 @@ while 1:
         other = abod[:]
         del other[i]
         # симуляция взаимействия
-        # на тело _ действуют тела (_, _ ... _, _)
+        # на тело i действуют тела other
         # и оно реагирует ( движется или стоит)
         abod[i].calc(*other)
 
-        # раз в _ шагов отображаются все тела
+        # раз в _ шагов отображаются все пути тел
         if co%10 == 0:
             path = abod[i].draw(path, scax, scay, indx, indy)
-        if co%100 == 0:
-            pygame.display.update()
-            #path.fill((0,0,0))
+    
+    # раз в _ шагов отображаются все тела
+    if co%100 == 0:
+        # создаём копию, чтобы не повредить
+        # основное изображение с путями
+        img = path.copy()
+        for i in range(len(abod)):
+            # рисуем каждое тело
+            path = abod[i].draw(path, scax, scay, indx, indy, 1)
+
+        pygame.display.update()
+        path.blit(img, (0,0))
+        #path.fill((0,0,0))
 
     # добавление шага
     co += 1
