@@ -84,7 +84,7 @@ class body():
         return path
 
 # шаг времени
-step=1*10**-9
+step=1*10**-7
 
 # положение тел
 xp1, yp1 = -3, 0
@@ -98,8 +98,8 @@ xyp3 = [xp3, yp3]
 xyp4 = [xp4, yp4]
 
 # нач скорость
-xv1, yv1 = 0, 0#ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
-xv2, yv2 = 0, 5*10**-5#ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
+xv1, yv1 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
+xv2, yv2 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
 xv3, yv3 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
 xv4, yv4 = ra.randint(-3,3)*10**-4, ra.randint(-3,3)*10**-4
 
@@ -109,8 +109,8 @@ xyv3 = [xv3, yv3]
 xyv4 = [xv4, yv4]
 
 # масса
-m1 = 1000#ra.randint(3,7)
-m2 = 0.01#ra.randint(3,7)
+m1 = ra.randint(3,7)
+m2 = ra.randint(3,7)
 m3 = ra.randint(3,7)
 m4 = ra.randint(3,7)
 
@@ -137,7 +137,7 @@ d = body(m4, xyp4, xyv4, step, col4, r, draw4)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
-abod =[a,b,c]
+abod =[a,b,c,d]
 
 # печать всех значений self для всех тел
 for i in abod:
