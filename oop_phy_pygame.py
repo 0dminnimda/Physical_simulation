@@ -4,6 +4,7 @@ import pygame
 from functools import reduce
 import random as ra
 import math as ma
+from pygame.locals import *
 
 # сложение друх векторов
 def add_vec(v, w):
@@ -80,6 +81,7 @@ class body():
                 type = r
             elif type == 0:
                 r = self.r
+
             # положение центра фигуры
             hx = w/2 + px*scax + w*indentx/100
             hy = h/2 + py*scay + h*indenty/100
@@ -87,7 +89,7 @@ class body():
         return path
 
 # шаг времени
-step = 1*10**-6.5
+step = 1*10**-6.75
 
 # положение тел
 xp1, yp1 = -3, 0
@@ -157,13 +159,14 @@ indx, indy = 0, 0 # percent
 co = 0
 
 pygame.init()
-path = pygame.display.set_mode((1500, 750))
+path = pygame.display.set_mode((1500, 750), RESIZABLE)  # FULLSCREEN)
 
-while 1:
+run = True
+while run:
     # условия окончания программы
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            break
+        if event.type==KEYDOWN and event.key == K_ESCAPE:
+            run = False
  
     # цикл перечисляет все элементы
     # массива с телами
