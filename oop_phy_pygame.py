@@ -178,6 +178,11 @@ while run:
                 d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
                 abod = [a, b, c, d]
                 path.fill((0, 0, 0))
+            elif event.key == K_SPACE:
+                while 1:
+                    event = pygame.event.wait()
+                    if event.type == KEYDOWN and event.key == K_SPACE:
+                        break
  
     # цикл перечисляет все элементы
     # массива с телами
