@@ -150,6 +150,7 @@ co = 0
 
 pygame.init()
 path = pygame.display.set_mode((1500, 750), RESIZABLE)  # FULLSCREEN)
+pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
 
 while 1:
     event = pygame.event.wait()
