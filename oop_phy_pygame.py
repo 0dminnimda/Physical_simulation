@@ -114,13 +114,13 @@ react1 = 1
 react2 = 0
 
 # положение тел
-xp1, yp1 = -10, 0
+xp1, yp1 = -5, 0
 xp2, yp2 = 0, 0
 xp3, yp3 = 4, -4
 xp4, yp4 = -4, -4
 
 # нач скорость
-xv1, yv1 = 0, 10  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv1, yv1 = 0, 18.5  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv2, yv2 = 0, 0  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
@@ -169,7 +169,7 @@ for i in abod:
     i.pr()
 
 # масштаб
-scax = scay = 30
+scax = scay = 40
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 # шаг
