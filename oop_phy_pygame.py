@@ -18,6 +18,9 @@ def sum_vec(*vecs):
 def ve_l(a):
     return np.linalg.norm(a)
 
+def vec_mul(arr, mul):
+    return [i*mul for i in arr]
+
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m, step):
     k = ve_l(r)**3/m
@@ -27,16 +30,17 @@ def v_vec(r, m, step):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, r_path, dr):
-        self.rad = 4*10**-1 # радиус тела
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react):
+        self.rad = 0#4*10**-1 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
-        self.vec = vec # вектор {x,y}
+        self.vec = vec_mul(vec,10**-4.5) # вектор {x,y}
         self.step = step # шаг времени
         self.col = col # цвет отображения тел
         self.r_path = r_path # радиус отрисовки тел
         self.r = r # радиус отрисовки тел
         self.dr_bo = bool(dr) # рисовать ли тело
+        self.react = bool(react)  # реагирует ли тело на другие тела
 
     # печать значений объекта класса
     def pr(self,*ar,**kw):
@@ -57,7 +61,7 @@ class body():
             # если центры масс тел ближе чем
             # радиусы тел они не перестают
             # притягивать друг друга
-            if (ma.fabs(mx-dx) > rad or ma.fabs(my-dy) > rad):
+            if (ma.fabs(mx-dx) > rad or ma.fabs(my-dy) > rad) and self.react is True:
                 # вект скорости, вызванный ускор
                 # или же силой другого тела
                 add_vec = v_vec([-mx+dx, -my+dy], ob.m, self.step)
@@ -91,21 +95,25 @@ class body():
 # шаг времени
 step = 1*10**-6.75
 
+# реагирует ли тело на другие тела
+react1 = 1
+react2 = 0
+
 # положение тел
-xp1, yp1 = -4, 4
-xp2, yp2 = 4, 4
+xp1, yp1 = -4, 0
+xp2, yp2 = 0, 0
 xp3, yp3 = 4, -4
 xp4, yp4 = -4, -4
 
 # нач скорость
-xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv1, yv1 = 0, 5  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv2, yv2 = 0, 0  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
-m1 = ra.randint(3, 7)
-m2 = ra.randint(3, 7)
+m1 = 1  #ra.randint(3, 7)
+m2 = 1  #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -128,14 +136,14 @@ draw3 = 1
 draw4 = 1
 
 # создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1)
-b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2)
-c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3)
-d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
+a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2)
+#c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3)
+#d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
-abod = [a, b, c, d]
+abod = [a, b]
 
 # печать всех значений self для всех тел
 for i in abod:
@@ -149,7 +157,7 @@ indx, indy = 0, 0 # percent
 co = 0
 
 pygame.init()
-path = pygame.display.set_mode((1500, 750), RESIZABLE)  # FULLSCREEN)
+path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN)
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
 
 while 1:
@@ -164,21 +172,31 @@ while run:
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 run = False
-            elif event.key == K_r:
-                xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-                xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-                xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-                xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-                m1 = ra.randint(3, 7)
-                m2 = ra.randint(3, 7)
-                m3 = ra.randint(3, 7)
-                m4 = ra.randint(3, 7)
-                a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1)
-                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2)
-                c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3)
-                d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
-                abod = [a, b, c, d]
-                path.fill((0, 0, 0))
+            elif event.key == K_a:
+                yv1 += 2
+                a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
+                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2)
+                abod = [a, b]
+            elif event.key == K_d:
+                yv1 -= 2
+                a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
+                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2)
+                abod = [a, b]
+            #elif event.key == K_r:
+            #    xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+            #    xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+            #    xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+            #    xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+            #    m1 = ra.randint(3, 7)
+            #    m2 = ra.randint(3, 7)
+            #    m3 = ra.randint(3, 7)
+            #    m4 = ra.randint(3, 7)
+            #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1)
+            #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2)
+            #    c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3)
+            #    d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
+            #    abod = [a, b, c, d]
+            #    path.fill((0, 0, 0))
             elif event.key == K_SPACE:
                 while 1:
                     event = pygame.event.wait()
@@ -200,7 +218,7 @@ while run:
             path = abod[i].draw(path, scax, scay, indx, indy)
     
     # раз в _ шагов отображаются все тела
-    if co%100 == 0:
+    if co%250 == 0:
         # создаём копию, чтобы не повредить
         # основное изображение с путями
         img = path.copy()
