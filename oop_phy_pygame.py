@@ -80,6 +80,7 @@ class body():
             # получение разрешения окна
             w, h = path.get_width(), path.get_height()
             px, py = self.x, self.y
+            vec = self.vec
             col = self.col
             if type == 1:
                 r = self.r_path
@@ -91,11 +92,17 @@ class body():
             hx = w/2 + px*scax + w*indentx/100
             hy = h/2 + py*scay + h*indenty/100
 
+            
+
             mo = self.model
             if type != 1 and mo != 0:
                 path.blit(mo, (int(hx-mo.get_width()//2), int(hy-mo.get_height()//2)))
             else:
                 pygame.draw.circle(path, col, (int(hx), int(hy)), r, type)
+
+            if type != 1 and ve_l(vec) != 0:
+                vve = add_vec(vec_mul(vec, 10**4.9375), (hx, hy))
+                pygame.draw.line(path, (0, 255, 0), (hx, hy), vve, 3)
 
         return path
 
@@ -107,20 +114,20 @@ react1 = 1
 react2 = 0
 
 # положение тел
-xp1, yp1 = -4, 0
+xp1, yp1 = -10, 0
 xp2, yp2 = 0, 0
 xp3, yp3 = 4, -4
 xp4, yp4 = -4, -4
 
 # нач скорость
-xv1, yv1 = 0, 5  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv1, yv1 = 0, 10  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv2, yv2 = 0, 0  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1  #ra.randint(3, 7)
-m2 = 1  #ra.randint(3, 7)
+m2 = 10  #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -142,9 +149,10 @@ draw2 = 1
 draw3 = 1
 draw4 = 1
 
-star = pygame.image.load('star.jpg')  #.convert()
-
+star = pygame.image.load('star2.png')  #.convert()
 star = pygame.transform.scale(star, (50, 50))
+star.set_colorkey((255, 255, 255))
+
 
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
@@ -169,7 +177,9 @@ co = 0
 
 pygame.init()
 bgr = pygame.image.load('space.jpeg')
-path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN) .convert()
+#bgr = bgr.convert()
+path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
+#path.set_alpha(100)
 bgr = pygame.transform.scale(bgr, (1540, 800))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
@@ -193,12 +203,12 @@ while run:
             elif event.key == K_a:
                 yv1 += 1
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2)
+                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 abod = [a, b]
             elif event.key == K_d:
                 yv1 -= 1
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2)
+                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 abod = [a, b]
             #elif event.key == K_r:
             #    xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
@@ -219,6 +229,9 @@ while run:
                 while 1:
                     event = pygame.event.wait()
                     if event.type == KEYDOWN and event.key == K_SPACE:
+                        break
+                    elif event.key == K_ESCAPE:
+                        run = False
                         break
 
     # цикл перечисляет все элементы
