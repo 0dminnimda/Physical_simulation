@@ -30,7 +30,7 @@ def v_vec(r, m, step):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react):
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, model=0):
         self.rad = 0#4*10**-1 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
@@ -41,6 +41,7 @@ class body():
         self.r = r # радиус отрисовки тел
         self.dr_bo = bool(dr) # рисовать ли тело
         self.react = bool(react)  # реагирует ли тело на другие тела
+        self.model = model  # отрисует картинку вместо точки
 
     # печать значений объекта класса
     def pr(self,*ar,**kw):
@@ -89,51 +90,54 @@ class body():
             # положение центра фигуры
             hx = w/2 + px*scax + w*indentx/100
             hy = h/2 + py*scay + h*indenty/100
+
             pygame.draw.circle(path, col, (int(hx), int(hy)), r, type)
         return path
 
-# шаг времени
-step = 1*10**-6.75
 
-# реагирует ли тело на другие тела
-react1 = 1
-react2 = 0
+for _ in range(1):
+    # шаг времени
+    step = 1*10**-6.75
 
-# положение тел
-xp1, yp1 = -4, 0
-xp2, yp2 = 0, 0
-xp3, yp3 = 4, -4
-xp4, yp4 = -4, -4
+    # реагирует ли тело на другие тела
+    react1 = 1
+    react2 = 0
 
-# нач скорость
-xv1, yv1 = 0, 5  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-xv2, yv2 = 0, 0  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+    # положение тел
+    xp1, yp1 = -4, 0
+    xp2, yp2 = 0, 0
+    xp3, yp3 = 4, -4
+    xp4, yp4 = -4, -4
 
-# масса
-m1 = 1  #ra.randint(3, 7)
-m2 = 1  #ra.randint(3, 7)
-m3 = ra.randint(3, 7)
-m4 = ra.randint(3, 7)
+    # нач скорость
+    xv1, yv1 = 0, 5  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+    xv2, yv2 = 0, 0  #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+    xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+    xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
-# цвет тел
-col1 = (0, 0, 255)
-col2 = (255, 0, 0)
-col3 = (0, 255, 0)
-col4 = (255, 255, 255)
+    # масса
+    m1 = 1  #ra.randint(3, 7)
+    m2 = 1  #ra.randint(3, 7)
+    m3 = ra.randint(3, 7)
+    m4 = ra.randint(3, 7)
 
-# радиус отрисовки тел
-r1 = r2 = r3 = r4 = 6
+    # цвет тел
+    col1 = (0, 0, 255)
+    col2 = (255, 0, 0)
+    col3 = (0, 255, 0)
+    col4 = (255, 255, 255)
 
-# радиус пути
-rpath = 1
+    # радиус отрисовки тел
+    r1 = r2 = r3 = r4 = 6
 
-# отрисовка тел
-draw1 = 1
-draw2 = 1
-draw3 = 1
-draw4 = 1
+    # радиус пути
+    rpath = 1
+
+    # отрисовка тел
+    draw1 = 1
+    draw2 = 1
+    draw3 = 1
+    draw4 = 1
 
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
@@ -157,15 +161,23 @@ indx, indy = 0, 0 # percent
 co = 0
 
 pygame.init()
+bgr = pygame.image.load('space.jpeg')
 path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN)
+bgr = bgr.convert()
+bgr2 = pygame.transform.scale(bgr, (1540, 800))
+path.blit(bgr2,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
+
+run = True
 
 while 1:
     event = pygame.event.wait()
     if event.type == KEYDOWN and event.key == K_SPACE:
         break
+    elif event.type == KEYDOWN and event.key == K_ESCAPE:
+        run = False
+        break
 
-run = True
 while run:
     # условия окончания программы
     for event in pygame.event.get():
@@ -173,12 +185,12 @@ while run:
             if event.key == K_ESCAPE:
                 run = False
             elif event.key == K_a:
-                yv1 += 2
+                yv1 += 1
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
                 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2)
                 abod = [a, b]
             elif event.key == K_d:
-                yv1 -= 2
+                yv1 -= 1
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
                 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2)
                 abod = [a, b]
@@ -202,7 +214,7 @@ while run:
                     event = pygame.event.wait()
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         break
- 
+
     # цикл перечисляет все элементы
     # массива с телами
     for i in range(len(abod)):
@@ -224,7 +236,7 @@ while run:
         img = path.copy()
         for i in range(len(abod)):
             # рисуем каждое тело
-            path = abod[i].draw(path, scax, scay, indx, indy, 0)
+            path = abod[i].draw(path, scax, scay, indx, indy, type=0)
 
         pygame.display.update()
         path.blit(img, (0,0))
