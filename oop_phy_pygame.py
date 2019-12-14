@@ -194,8 +194,12 @@ path = pygame.display.set_mode((1540, 801), RESIZABLE)  # FULLSCREEN) .convert()
 bgr = pygame.transform.scale(bgr, (1540, 801))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
-rect = (0, 0)#pygame.Rect((0, path.get_height()-35))
-bla = pygame.Surface((215, 25))
+siz = (220, 25)
+rect = (7, 7)
+bla = pygame.Surface(siz)
+bla.fill((0, 0, 0))
+pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-1,-1])), 1)
+black = bla.copy()
 
 
 run = True
@@ -266,11 +270,12 @@ while run:
     # раз в _ шагов отображаются все тела
     if co%100 == 0:
         # текст на изображении
-        bla.fill((0, 0, 0))
+        #bla.fill((0, 0, 0))
+        bla.blit(black, (0,0))
         path.blit(bla, rect)
         some = ma.sqrt(ve_l([ve_l([abod[0].x, abod[1].x]), ve_l([abod[0].y, abod[1].y])]))
         text1 = f1.render(str(some), 1, (0, 0, 255))
-        path.blit(text1, (0, 0))
+        path.blit(text1, sum_vec(rect, [5, 0]))
 
         # создаём копию, чтобы не повредить
         # основное изображение с путями
