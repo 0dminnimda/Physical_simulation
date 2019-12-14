@@ -188,8 +188,8 @@ path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN) .convert()
 bgr = pygame.transform.scale(bgr, (1540, 800))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
-bla = pygame.Rect((0, path.get_height()-33, 80, path.get_height()+50))
-surf1 = pygame.Surface((100, 101))
+rect = pygame.Rect((0, path.get_height()-63, 30, path.get_height()-100))
+bla = pygame.Surface((250, 200))
 
 
 run = True
@@ -241,11 +241,7 @@ while run:
                         run = False
                         break
 
-    surf1.fill((0, 0, 0))
-    path.blit(surf1, bla)
-    some = ma.sqrt(ve_l([ve_l([abod[0].x, abod[1].x]), ve_l([abod[0].y, abod[1].y])]))
-    text1 = f1.render(str(some), 1, (0, 0, 255))
-    path.blit(text1, (0, path.get_height()-33))
+    
     
     
 
@@ -265,6 +261,11 @@ while run:
     
     # раз в _ шагов отображаются все тела
     if co%250 == 0:
+        bla.fill((0, 0, 0))
+        path.blit(bla, rect)
+        some = ma.sqrt(ve_l([ve_l([abod[0].x, abod[1].x]), ve_l([abod[0].y, abod[1].y])]))
+        text1 = f1.render(str(some), 1, (0, 0, 255))
+        path.blit(text1, (0, path.get_height()-33))
         # создаём копию, чтобы не повредить
         # основное изображение с путями
         img = path.copy()
