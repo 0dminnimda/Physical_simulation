@@ -178,7 +178,7 @@ indx, indy = 0, 0 # percent
 # шаг
 co = 0
 
-f1 = pygame.font.Font(None, 32)
+f1 = pygame.font.Font(None, 30)
 
 
 bgr = pygame.image.load('space.jpeg')
@@ -188,8 +188,8 @@ path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN) .convert()
 bgr = pygame.transform.scale(bgr, (1540, 800))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
-rect = pygame.Rect((0, path.get_height()-63, 30, path.get_height()-100))
-bla = pygame.Surface((250, 200))
+rect = (0, path.get_height()-35)#pygame.Rect((0, path.get_height()-35))
+bla = pygame.Surface((250, 100))
 
 
 run = True
@@ -237,13 +237,9 @@ while run:
                     event = pygame.event.wait()
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         break
-                    elif event.key == K_ESCAPE:
+                    elif event.type == KEYDOWN and event.key == K_ESCAPE:
                         run = False
                         break
-
-    
-    
-    
 
     # цикл перечисляет все элементы
     # массива с телами
@@ -261,11 +257,13 @@ while run:
     
     # раз в _ шагов отображаются все тела
     if co%250 == 0:
+        # текст на изображении
         bla.fill((0, 0, 0))
         path.blit(bla, rect)
         some = ma.sqrt(ve_l([ve_l([abod[0].x, abod[1].x]), ve_l([abod[0].y, abod[1].y])]))
         text1 = f1.render(str(some), 1, (0, 0, 255))
         path.blit(text1, (0, path.get_height()-33))
+
         # создаём копию, чтобы не повредить
         # основное изображение с путями
         img = path.copy()
