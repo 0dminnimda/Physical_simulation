@@ -26,7 +26,7 @@ def vec_mul(arr, mul):
 
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m, step):
-    f = m/ve_l(r)**1
+    f = m/ve_l(r)**2
     k = ve_l(r)/f
     r[0] = r[0]/k*step
     r[1] = r[1]/k*step
@@ -115,7 +115,7 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-scax = scay = 50
+scax = scay = 60
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 
@@ -126,7 +126,7 @@ react3 = 1
 react4 = 1
 
 # положение тел
-xp1, yp1 = 5, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
+xp1, yp1 = 6, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
 xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
@@ -139,7 +139,7 @@ xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1 #ra.randint(3, 7)
-m2 = 5 #ra.randint(3, 7)
+m2 = 10 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -185,15 +185,13 @@ for i in abod:
 co = 0
 
 f1 = pygame.font.SysFont("arial", 20)
-
-
 bgr = pygame.image.load('space.jpeg')
 #bgr = bgr.convert()
 path = pygame.display.set_mode((1540, 801), RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
 #path.set_alpha(100)
 bgr = pygame.transform.scale(bgr, (1540, 801))
 path.blit(bgr,(0,0))
-pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
+pygame.display.set_caption("Press [Space] to play/pause and [esc] to escape")
 siz = (220, 25)
 rect = (7, 7)
 bla = pygame.Surface(siz)
@@ -264,7 +262,7 @@ while run:
         abod[i].calc(*other)
 
         # раз в _ шагов отображаются все пути тел
-        if co%10 == 0:
+        if co%1 == 0:
             path = abod[i].draw(path, scax, scay, indx, indy)
     
     # раз в _ шагов отображаются все тела
