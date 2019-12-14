@@ -26,7 +26,7 @@ def vec_mul(arr, mul):
 
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m, step):
-    f = 1/(ve_l(r)**3)
+    f = ve_l(r)**1
     k = ve_l(r)/f
     r[0] = r[0]/k*step
     r[1] = r[1]/k*step
@@ -86,6 +86,7 @@ class body():
             px, py = self.x, self.y
             vec = self.vec
             col = self.col
+
             if type == 1:
                 r = self.r_path
                 type = r
@@ -99,12 +100,13 @@ class body():
             mo = self.model
             if type != 1 and mo != 0:
                 path.blit(mo, (int(hx-mo.get_width()//2), int(hy-mo.get_height()//2)))
-            else:
+            else:                
                 pygame.draw.circle(path, col, (int(hx), int(hy)), r, type)
 
             if type != 1 and ve_l(vec) != 0:
                 vve = add_vec(vec_mul(vec, 10**4.9375), (hx, hy))
-                pygame.draw.line(path, (0, 255, 0), (hx, hy), vve, 3)
+                for i in range(-1, 2):
+                    pygame.draw.aaline(path, (0, 255, 0), (hx, hy+i), sum_vec(vve, [0, i]), -1)
                 #pygame.draw.line(path, (0, 255, 0), (hx, hy), vve, 3)
 
         return path
@@ -113,7 +115,7 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-scax = scay = 100
+scax = scay = 50
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 
@@ -124,13 +126,13 @@ react3 = 1
 react4 = 1
 
 # положение тел
-xp1, yp1 = -2.5, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#
+xp1, yp1 = 5, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
 xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 
 # нач скорость
-xv1, yv1 = 0, 5.315 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv1, yv1 = 0, 3 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
 xv2, yv2 = 0 ,0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
@@ -160,7 +162,8 @@ draw3 = 1
 draw4 = 1
 
 star = pygame.image.load('star2.png')  #.convert()
-star = pygame.transform.scale(star, (50, 50))
+s = 50
+star = pygame.transform.scale(star, (s, s))
 star.set_colorkey((255, 255, 255))
 
 
@@ -186,9 +189,9 @@ f1 = pygame.font.SysFont("arial", 20)
 
 bgr = pygame.image.load('space.jpeg')
 #bgr = bgr.convert()
-path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
+path = pygame.display.set_mode((1540, 801), RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
 #path.set_alpha(100)
-bgr = pygame.transform.scale(bgr, (1540, 800))
+bgr = pygame.transform.scale(bgr, (1540, 801))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
 rect = (0, 0)#pygame.Rect((0, path.get_height()-35))
