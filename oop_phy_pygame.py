@@ -113,7 +113,7 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-scax = scay = 60
+scax = scay = 100
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 
@@ -130,7 +130,7 @@ xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 
 # нач скорость
-xv1, yv1 = 0, 4 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv1, yv1 = 0, 5.315 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv2, yv2 = 0 ,0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
