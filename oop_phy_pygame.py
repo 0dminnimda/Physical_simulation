@@ -6,6 +6,9 @@ import random as ra
 import math as ma
 from pygame.locals import *
 
+
+pygame.init()
+
 # сложение друх векторов
 def add_vec(v, w):
     return [vi + wi for vi, wi in zip(v, w)]
@@ -175,7 +178,9 @@ indx, indy = 0, 0 # percent
 # шаг
 co = 0
 
-pygame.init()
+f1 = pygame.font.Font(None, 32)
+
+
 bgr = pygame.image.load('space.jpeg')
 #bgr = bgr.convert()
 path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
@@ -183,9 +188,11 @@ path = pygame.display.set_mode((1540, 800), RESIZABLE)  # FULLSCREEN) .convert()
 bgr = pygame.transform.scale(bgr, (1540, 800))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause, [r] to reset and [esc] to escape")
+bla = pygame.Rect((0, path.get_height()-33, 80, path.get_height()+50))
+surf1 = pygame.Surface((100, 101))
+
 
 run = True
-
 while 1:
     event = pygame.event.wait()
     if event.type == KEYDOWN and event.key == K_SPACE:
@@ -233,6 +240,14 @@ while run:
                     elif event.key == K_ESCAPE:
                         run = False
                         break
+
+    surf1.fill((0, 0, 0))
+    path.blit(surf1, bla)
+    some = ma.sqrt(ve_l([ve_l([abod[0].x, abod[1].x]), ve_l([abod[0].y, abod[1].y])]))
+    text1 = f1.render(str(some), 1, (0, 0, 255))
+    path.blit(text1, (0, path.get_height()-33))
+    
+    
 
     # цикл перечисляет все элементы
     # массива с телами
