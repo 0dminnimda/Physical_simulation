@@ -26,7 +26,7 @@ def vec_mul(arr, mul):
 
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m, step):
-    f = ve_l(r)**1
+    f = m/ve_l(r)**1
     k = ve_l(r)/f
     r[0] = r[0]/k*step
     r[1] = r[1]/k*step
@@ -105,9 +105,9 @@ class body():
 
             if type != 1 and ve_l(vec) != 0:
                 vve = add_vec(vec_mul(vec, 10**4.9375), (hx, hy))
-                for i in range(-1, 2):
-                    pygame.draw.aaline(path, (0, 255, 0), (hx, hy+i), sum_vec(vve, [0, i]), -1)
-                #pygame.draw.line(path, (0, 255, 0), (hx, hy), vve, 3)
+                #for i in range(-1, 2):
+                #    pygame.draw.aaline(path, (0, 255, 0), (hx+i, hy+i), sum_vec(vve, [0+i, i]), -1)
+                pygame.draw.line(path, (0, 255, 0), (hx, hy), vve, 3)
 
         return path
 
@@ -132,14 +132,14 @@ xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 
 # нач скорость
-xv1, yv1 = 0, 3 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
+xv1, yv1 = 0, 9 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
 xv2, yv2 = 0 ,0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1 #ra.randint(3, 7)
-m2 = 10 #ra.randint(3, 7)
+m2 = 5 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
