@@ -37,7 +37,7 @@ def v_vec(r, m1, m2, step):
 # класс физического тела
 class body():
     def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, model=0):
-        self.rad = 1*10**-3 # радиус тела
+        self.rad = 1*10**-4 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
         self.vec = vec_mul(vec,10**-4.5) # вектор {x,y}
@@ -195,7 +195,7 @@ bgr = pygame.transform.scale(bgr, (1540, 801))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause and [esc] to escape")
 siz = (220, 25)
-rect = (7, 7)
+rect = (10, 10)
 bla = pygame.Surface(siz)
 bla.fill((0, 0, 0))
 pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-1,-1])), 1)
