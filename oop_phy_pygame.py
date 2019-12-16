@@ -25,9 +25,11 @@ def vec_mul(arr, mul):
     return [i*mul for i in arr]
 
 # вычисл вект скорости напрпр к др телу
-def v_vec(r, m, step):
-    f = m/ve_l(r)**2
-    k = ve_l(r)/f
+def v_vec(r, m1, m2, step):
+    rad = ve_l(r)
+    f = 1/rad**3#m1*m2/**2
+    a = f/m1
+    k = rad/a
     r[0] = r[0]/k*step
     r[1] = r[1]/k*step
     return r
@@ -35,7 +37,7 @@ def v_vec(r, m, step):
 # класс физического тела
 class body():
     def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, model=0):
-        self.rad = 1*10**-1 # радиус тела
+        self.rad = 1*10**-3 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
         self.vec = vec_mul(vec,10**-4.5) # вектор {x,y}
@@ -69,7 +71,7 @@ class body():
             if (ma.fabs(mx-dx) > rad or ma.fabs(my-dy) > rad) and self.react is True:
                 # вект скорости, вызванный ускор
                 # или же силой другого тела
-                add_vec = v_vec([-mx+dx, -my+dy], ob.m, self.step)
+                add_vec = v_vec([-mx+dx, -my+dy], self.m, ob.m, self.step)
                 # сложение нового и старого вект
                 self.vec = sum_vec(add_vec, self.vec)
 
@@ -115,7 +117,7 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-scax = scay = 60
+scax = scay = 80
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 
@@ -126,20 +128,20 @@ react3 = 1
 react4 = 1
 
 # положение тел
-xp1, yp1 = 6, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
+xp1, yp1 = 4, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
 xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 
 # нач скорость
-xv1, yv1 = 0, 9 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
-xv2, yv2 = 0 ,0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv1, yv1 = 0, 3.3 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
+xv2, yv2 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1 #ra.randint(3, 7)
-m2 = 10 #ra.randint(3, 7)
+m2 = 10**4 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -218,12 +220,12 @@ while run:
             elif event.key == K_c:
                 path.blit(bgr,(0,0))
             elif event.key == K_a:
-                yv1 += 1/2
+                yv1 += 1/20
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
                 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 abod = [a, b]
             elif event.key == K_d:
-                yv1 -= 1/2
+                yv1 -= 1/20
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
                 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 abod = [a, b]
