@@ -26,10 +26,10 @@ def vec_mul(arr, mul):
 
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m1, m2, step):
-    rad = ve_l(r)
-    f = 1/rad**3#m1*m2/**2
+    dist = ve_l(r)
+    f = m2*dist**0 #m1*m2/dist**2
     a = f/m1
-    k = rad/a
+    k = dist/a
     r[0] = r[0]/k*step
     r[1] = r[1]/k*step
     return r
@@ -117,7 +117,7 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-scax = scay = 80
+scax = scay = 90
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 
@@ -134,14 +134,14 @@ xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 
 # нач скорость
-xv1, yv1 = 0, 3.3 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
+xv1, yv1 = 0, 6 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
 xv2, yv2 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1 #ra.randint(3, 7)
-m2 = 10**4 #ra.randint(3, 7)
+m2 = 10 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -187,7 +187,7 @@ for i in abod:
 co = 0
 
 f1 = pygame.font.SysFont("arial", 20)
-bgr = pygame.image.load('space.jpeg')
+bgr = pygame.image.load('space2.jpg')
 #bgr = bgr.convert()
 path = pygame.display.set_mode((1540, 801), RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
 #path.set_alpha(100)
@@ -229,6 +229,12 @@ while run:
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
                 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 abod = [a, b]
+            elif event.key == K_z:
+                scax += 10
+                scay += 10
+            elif event.key == K_x:
+                scax -= 10
+                scay -= 10
             #elif event.key == K_r:
             #    xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
             #    xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
