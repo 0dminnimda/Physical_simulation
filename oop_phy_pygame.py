@@ -27,7 +27,8 @@ def vec_mul(arr, mul):
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m1, m2, step):
     dist = ve_l(r)
-    f = m2*dist**0 #m1*m2/dist**2
+    f = dist**2/m1*m2
+    #m1*m2/dist**2
     a = f/m1
     k = dist/a
     r[0] = r[0]/k*step
@@ -36,7 +37,7 @@ def v_vec(r, m1, m2, step):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, model=0):
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0):
         self.rad = 1*10**-4 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
@@ -47,6 +48,7 @@ class body():
         self.r = r # радиус отрисовки тел
         self.dr_bo = bool(dr) # рисовать ли тело
         self.react = bool(react)  # реагирует ли тело на другие тела
+        self.dr_vec = bool(dr_vec)  # рисовать ли вектор
         self.model = model  # отрисует картинку вместо точки
 
     # печать значений объекта класса
@@ -105,7 +107,7 @@ class body():
             else:                
                 pygame.draw.circle(path, col, (int(hx), int(hy)), r, type)
 
-            if type != 1 and ve_l(vec) != 0:
+            if type != 1 and ve_l(vec) != 0 and self.dr_vec is True:
                 vve = add_vec(vec_mul(vec, 10**4.9375), (hx, hy))
                 #for i in range(-1, 2):
                 #    pygame.draw.aaline(path, (0, 255, 0), (hx+i, hy+i), sum_vec(vve, [0+i, i]), -1)
@@ -117,9 +119,10 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-scax = scay = 90
+scax = 125
+scay = 10
 # сдвиг, в % от всего изображения
-indx, indy = 0, 0 # percent
+indx, indy = 0, -50 # percent
 
 # реагирует ли тело на другие тела
 react1 = 1
@@ -128,20 +131,20 @@ react3 = 1
 react4 = 1
 
 # положение тел
-xp1, yp1 = 4, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
+xp1, yp1 = 1, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
 xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 
 # нач скорость
-xv1, yv1 = 0, 6 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
-xv2, yv2 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv1, yv1 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
+xv2, yv2 = 0, 4 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1 #ra.randint(3, 7)
-m2 = 10 #ra.randint(3, 7)
+m2 = 100 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -159,9 +162,15 @@ rpath = 1
 
 # отрисовка тел
 draw1 = 1
-draw2 = 1
+draw2 = 0
 draw3 = 1
 draw4 = 1
+
+# отрисовка векторов
+dr_vec1 = 0
+dr_vec2 = 1
+dr_vec3 = 1
+dr_vec4 = 1
 
 star = pygame.image.load('star2.png')  #.convert()
 s = 50
@@ -170,10 +179,10 @@ star.set_colorkey((255, 255, 255))
 
 
 # создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
-c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3, react3)
-d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4)
+a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, star)
+c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3, react3, dr_vec3)
+d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4, dr_vec4)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
