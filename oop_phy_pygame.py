@@ -145,7 +145,7 @@ xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1 #ra.randint(3, 7)
-m2 = 10**6 #ra.randint(3, 7)
+m2 = 1*10**4 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -156,7 +156,7 @@ col3 = (255, 255, 0)
 col4 = (255, 255, 255)
 
 # частота отрисовки
-dr_fr_path = 1
+dr_fr_path = 23
 dr_fr_bod = 100
 
 # радиус отрисовки тел
@@ -244,11 +244,15 @@ while run:
                 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 abod = [a, b]
             elif event.key == K_z:
-                scax += 10
-                scay += 10
-            elif event.key == K_x:
                 scax -= 10
                 scay -= 10
+            elif event.key == K_x:
+                scax += 10
+                scay += 10
+            elif event.key == K_o:
+                dr_fr_path += 1
+            elif event.key == K_p:
+                dr_fr_path -= 1
             #elif event.key == K_r:
             #    xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
             #    xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
