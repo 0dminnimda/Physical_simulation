@@ -38,7 +38,7 @@ def v_vec(r, m1, m2, step):
 # класс физического тела
 class body():
     def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0):
-        self.rad = 1*10**-4 # радиус тела
+        self.rad = 1*10**-5 # радиус тела
         self.m = m # масса
         self.x, self.y = pos # положение (x,y)
         self.vec = vec_mul(vec,10**-4.5) # вектор {x,y}
@@ -119,10 +119,11 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-scax = 125
-scay = 10
+p = 2
+scax = 40*p
+scay = 87.5*p
 # сдвиг, в % от всего изображения
-indx, indy = 0, -50 # percent
+indx, indy = -50, 0 # percent
 
 # реагирует ли тело на другие тела
 react1 = 1
@@ -131,20 +132,20 @@ react3 = 1
 react4 = 1
 
 # положение тел
-xp1, yp1 = 1, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
+xp1, yp1 = 0, 1 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
 xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
 
 # нач скорость
 xv1, yv1 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
-xv2, yv2 = 0, 4 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+xv2, yv2 = 4, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
 m1 = 1 #ra.randint(3, 7)
-m2 = 100 #ra.randint(3, 7)
+m2 = 10**6 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -153,6 +154,10 @@ col1 = (0, 0, 255)
 col2 = (255, 0, 0)
 col3 = (255, 255, 0)
 col4 = (255, 255, 255)
+
+# частота отрисовки
+dr_fr_path = 1
+dr_fr_bod = 100
 
 # радиус отрисовки тел
 r1 = r2 = r3 = r4 = 10
@@ -279,11 +284,11 @@ while run:
         abod[i].calc(*other)
 
         # раз в _ шагов отображаются все пути тел
-        if co%1 == 0:
+        if co%dr_fr_path == 0:
             path = abod[i].draw(path, scax, scay, indx, indy)
     
     # раз в _ шагов отображаются все тела
-    if co%100 == 0:
+    if co%dr_fr_bod == 0:
         # текст на изображении
         #bla.fill((0, 0, 0))
         bla.blit(black, (0,0))
