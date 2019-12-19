@@ -156,14 +156,14 @@ col3 = (255, 255, 0)
 col4 = (255, 255, 255)
 
 # отрисовка текста
-dr_txt = False
+dr_txt = bool( 0 )
 
 # частота отрисовки
-dr_fr_path = 65
-dr_fr_bod = 100
+dr_fr_path = 1
+dr_fr_bod = 300
 
 # радиус отрисовки тел
-r1 = r2 = r3 = r4 = 10
+r1 = r2 = r3 = r4 = 0
 
 # радиус пути
 rpath = 1
@@ -211,13 +211,18 @@ path = pygame.display.set_mode((1540, 801), RESIZABLE)  # FULLSCREEN) .convert()
 bgr = pygame.transform.scale(bgr, (1540, 801))
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause and [esc] to escape")
-siz = (220, 25)
+siz = (240, 25)
 rect = (10, 10)
 bla = pygame.Surface(siz)
 bla.fill((0, 0, 0))
 pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-1,-1])), 1)
 black = bla.copy()
 
+conv_n = [True for _ in range(3)]
+end_n = [True for _ in range(25)]
+conv_v = 5
+end_v = 20
+i_conv = i_end = 0
 
 run = True
 while 1:
@@ -280,6 +285,21 @@ while run:
                         run = False
                         break
 
+    if ve_l([abod[1].x, abod[1].y]) >= conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
+        dr_fr_path += 1
+        conv_n[i_conv] = False
+        conv_v += 5
+        i_conv += 1
+    
+    if ve_l([abod[1].x, abod[1].y]) >= end_v and i_end < len(end_n) and end_n[i_end] is True:
+        indx -= 100
+        path.blit(bgr,(0,0))
+        conv_n = [True for i in range(3)]
+        end_v += 20
+        i_end += 1
+
+
+
     # цикл перечисляет все элементы
     # массива с телами
     for i in range(len(abod)):
@@ -293,7 +313,7 @@ while run:
         # раз в _ шагов отображаются все пути тел
         if co%dr_fr_path == 0:
             path = abod[i].draw(path, scax, scay, indx, indy)
-    
+
     # раз в _ шагов отображаются все тела
     if co%dr_fr_bod == 0:
         # текст на изображении
@@ -301,7 +321,8 @@ while run:
         if dr_txt is True:
             bla.blit(black, (0,0))
             path.blit(bla, rect)
-            some = ma.sqrt(ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y]))
+            some = ve_l([abod[1].x, abod[1].y])
+            #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
             text1 = f1.render(str(some), 1, (0, 0, 255))
             path.blit(text1, sum_vec(rect, [5, 0]))
 
