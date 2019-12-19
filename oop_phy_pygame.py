@@ -155,8 +155,11 @@ col2 = (255, 0, 0)
 col3 = (255, 255, 0)
 col4 = (255, 255, 255)
 
+# отрисовка текста
+dr_txt = False
+
 # частота отрисовки
-dr_fr_path = 23
+dr_fr_path = 65
 dr_fr_bod = 100
 
 # радиус отрисовки тел
@@ -295,11 +298,12 @@ while run:
     if co%dr_fr_bod == 0:
         # текст на изображении
         #bla.fill((0, 0, 0))
-        bla.blit(black, (0,0))
-        path.blit(bla, rect)
-        some = ma.sqrt(ve_l([ve_l([abod[0].x, abod[1].x]), ve_l([abod[0].y, abod[1].y])]))
-        text1 = f1.render(str(some), 1, (0, 0, 255))
-        path.blit(text1, sum_vec(rect, [5, 0]))
+        if dr_txt is True:
+            bla.blit(black, (0,0))
+            path.blit(bla, rect)
+            some = ma.sqrt(ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y]))
+            text1 = f1.render(str(some), 1, (0, 0, 255))
+            path.blit(text1, sum_vec(rect, [5, 0]))
 
         # создаём копию, чтобы не повредить
         # основное изображение с путями
