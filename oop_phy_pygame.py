@@ -223,6 +223,7 @@ end_n = [True for _ in range(25)]
 conv_v = 5.125
 end_v = 20.5
 i_conv = i_end = 0
+nul = (0, 0)
 
 run = True
 while 1:
@@ -285,19 +286,21 @@ while run:
                         run = False
                         break
 
-    if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
+    if ve_l([abod[1].x-nul[0], abod[1].y-nul[1]]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
         dr_fr_path += 1
         conv_n[i_conv] = False
         conv_v += 5.125
         i_conv += 1
     
-    if ve_l([abod[1].x, abod[1].y]) > end_v and i_end < len(end_n) and end_n[i_end] is True:
-        indx -= 101
+    if ve_l([abod[1].x-nul[0], abod[1].y-nul[1]]) > end_v and i_end < len(end_n) and end_n[i_end] is True:
+        dr_fr_path += 1
+        nul = (abod[1].x, abod[1].y)
+        indx -= 101.8
         path.blit(bgr,(0,0))
         conv_n = [True for i in range(3)]
         i_conv = 0
-        conv_v += 5.125
-        end_v += 20.5
+        conv_v = 5.125
+        #end_v += 20.5
         i_end += 1
 
     # цикл перечисляет все элементы
