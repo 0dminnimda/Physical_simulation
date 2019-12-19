@@ -119,7 +119,7 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-p = 1.95
+p = 1.91
 scax = 40*p
 scay = 87.5*p
 # сдвиг, в % от всего изображения
@@ -292,9 +292,10 @@ while run:
         i_conv += 1
     
     if ve_l([abod[1].x, abod[1].y]) > end_v and i_end < len(end_n) and end_n[i_end] is True:
-        indx -= 100
+        indx -= 101
         path.blit(bgr,(0,0))
         conv_n = [True for i in range(3)]
+        i_conv = 0
         conv_v += 5.125
         end_v += 20.5
         i_end += 1
