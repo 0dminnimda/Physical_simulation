@@ -119,7 +119,7 @@ class body():
 step = 1*10**-6.75
 
 # масштаб
-p = 2
+p = 1.95
 scax = 40*p
 scay = 87.5*p
 # сдвиг, в % от всего изображения
@@ -156,7 +156,7 @@ col3 = (255, 255, 0)
 col4 = (255, 255, 255)
 
 # отрисовка текста
-dr_txt = bool( 0 )
+dr_txt = bool( 1 )
 
 # частота отрисовки
 dr_fr_path = 1
@@ -220,8 +220,8 @@ black = bla.copy()
 
 conv_n = [True for _ in range(3)]
 end_n = [True for _ in range(25)]
-conv_v = 5
-end_v = 20
+conv_v = 5.125
+end_v = 20.5
 i_conv = i_end = 0
 
 run = True
@@ -285,20 +285,19 @@ while run:
                         run = False
                         break
 
-    if ve_l([abod[1].x, abod[1].y]) >= conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
+    if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
         dr_fr_path += 1
         conv_n[i_conv] = False
-        conv_v += 5
+        conv_v += 5.125
         i_conv += 1
     
-    if ve_l([abod[1].x, abod[1].y]) >= end_v and i_end < len(end_n) and end_n[i_end] is True:
+    if ve_l([abod[1].x, abod[1].y]) > end_v and i_end < len(end_n) and end_n[i_end] is True:
         indx -= 100
         path.blit(bgr,(0,0))
         conv_n = [True for i in range(3)]
-        end_v += 20
+        conv_v += 5.125
+        end_v += 20.5
         i_end += 1
-
-
 
     # цикл перечисляет все элементы
     # массива с телами
