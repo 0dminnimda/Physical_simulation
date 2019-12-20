@@ -159,7 +159,7 @@ col4 = (255, 255, 255)
 dr_txt = bool( 1 )
 
 # частота отрисовки
-dr_fr_path = 1
+dr_fr_path = 1 #+ 4*52
 dr_fr_bod = 300
 
 # радиус отрисовки тел
@@ -223,7 +223,7 @@ conv_n = [True for _ in range(3)]
 end_n = [True for _ in range(2)]
 conv_v = 5.125
 end_v = 20.5
-i_conv = i_end = 0
+i_conv = i_end = end_in = 0
 
 run = True
 while 1:
@@ -300,6 +300,7 @@ while run:
         i_end = (i_end + 1)%2
         end_n[0] = end_n[1]
         end_n[1] = True
+        end_in += 1
 
     # смена частота отрисовки
     if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
@@ -330,7 +331,7 @@ while run:
         if dr_txt is True:
             bla.blit(black, (0,0))
             path.blit(bla, rect)
-            some = ve_l([abod[1].x, abod[1].y])
+            some = end_in #ve_l([abod[1].x, abod[1].y])
             #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
             text1 = f1.render(str(some), 1, (0, 0, 255))
             path.blit(text1, sum_vec(rect, [5, 0]))
