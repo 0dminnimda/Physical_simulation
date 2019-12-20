@@ -218,6 +218,7 @@ bla.fill((0, 0, 0))
 pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-1,-1])), 1)
 black = bla.copy()
 
+# параметры для шоу частота отрисовки
 conv_n = [True for _ in range(3)]
 end_n = [True for _ in range(2)]
 conv_v = 5.125
@@ -285,8 +286,9 @@ while run:
                         run = False
                         break
 
+    # смена на следующий рисунок
     if ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
-        print(ve_l([abod[1].x, abod[1].y]), end_v, end_n[i_end])
+        # print("big", ve_l([abod[1].x, abod[1].y]), end_v, end_n[i_end])
         dr_fr_path += 1
         a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
         b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, star)
@@ -298,15 +300,14 @@ while run:
         i_end = (i_end + 1)%2
         end_n[0] = end_n[1]
         end_n[1] = True
-        print("big")
 
+    # смена частота отрисовки
     if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
-        print(ve_l([abod[1].x, abod[1].y]), conv_v, i_conv, len(conv_n), conv_n[i_conv])
+        # print("min", ve_l([abod[1].x, abod[1].y]), conv_v, i_conv, len(conv_n), conv_n[i_conv])
         dr_fr_path += 1
         conv_n[i_conv] = False
         conv_v += 5.125
         i_conv += 1
-        print("min")
 
     # цикл перечисляет все элементы
     # массива с телами
