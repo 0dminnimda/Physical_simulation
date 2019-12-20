@@ -219,11 +219,10 @@ pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-1,-1])), 1)
 black = bla.copy()
 
 conv_n = [True for _ in range(3)]
-end_n = [True for _ in range(25)]
+end_n = [True for _ in range(2)]
 conv_v = 5.125
 end_v = 20.5
 i_conv = i_end = 0
-nul = (0, 0)
 
 run = True
 while 1:
@@ -286,22 +285,28 @@ while run:
                         run = False
                         break
 
-    if ve_l([abod[1].x-nul[0], abod[1].y-nul[1]]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
+    if ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
+        print(ve_l([abod[1].x, abod[1].y]), end_v, end_n[i_end])
+        dr_fr_path += 1
+        a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
+        b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, star)
+        abod = [a, b]
+        path.blit(bgr,(0,0))
+        conv_n = [True for _ in range(3)]
+        i_conv = 0
+        conv_v = 5.125
+        i_end = (i_end + 1)%2
+        end_n[0] = end_n[1]
+        end_n[1] = True
+        print("big")
+
+    if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
+        print(ve_l([abod[1].x, abod[1].y]), conv_v, i_conv, len(conv_n), conv_n[i_conv])
         dr_fr_path += 1
         conv_n[i_conv] = False
         conv_v += 5.125
         i_conv += 1
-    
-    if ve_l([abod[1].x-nul[0], abod[1].y-nul[1]]) > end_v and i_end < len(end_n) and end_n[i_end] is True:
-        dr_fr_path += 1
-        nul = (abod[1].x, abod[1].y)
-        indx -= 101.8
-        path.blit(bgr,(0,0))
-        conv_n = [True for i in range(3)]
-        i_conv = 0
-        conv_v = 5.125
-        #end_v += 20.5
-        i_end += 1
+        print("min")
 
     # цикл перечисляет все элементы
     # массива с телами
