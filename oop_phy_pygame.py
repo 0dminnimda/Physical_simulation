@@ -349,17 +349,15 @@ while run:
         #vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
         if fr_toch is True:
             pos_n = mp(scax, scay, scr, indx, indy)
-            #print("fr_to")
             abod.append(body(3, pos_n, [0,0], step, col4, r4, rpath, draw4, 0, 0, dr_vec4))
             fr_toch = False
     else:
-        if fr_toch is False: #and len(abod) != 0:
+        if fr_toch is False:
             vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
-            abod[-1].vec = vec_n
+            abod[-1].vec = vec_mul(vec_n, 10**-4.5)
             abod[-1].react = True
             abod[-1].react_all = True
-            #print("m_up")
-            print(vec_n)
+            #print(vec_n)
             fr_toch = True
 
     # смена на следующий рисунок
