@@ -191,7 +191,7 @@ xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
-m1 = 1 #ra.randint(3, 7)
+m1 = -1 #ra.randint(3, 7)
 m2 = 1*10**0.5 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
@@ -242,6 +242,7 @@ d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4, reall
 # массив со всеми телами, что
 # будут использоваться в симуляции
 abod = [a,b]
+abod = []
 
 # печать всех значений self для всех тел
 for i in abod:
@@ -277,7 +278,7 @@ i_conv = i_end = end_in = 0
 
 # нажатие
 touched = False
-fr_toch = False
+fr_toch = True
 vec_n = [0,0]
 
 run = True
@@ -343,15 +344,18 @@ while run:
         run = pau()
         pause = False
 
+    # создание нового объекта, с помощью касания
     if touched is True:
+        #vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
         if fr_toch is True:
             pos_n = mp(scax, scay, scr, indx, indy)
             #print("fr_to")
             abod.append(body(3, pos_n, [0,0], step, col4, r4, rpath, draw4, 0, 0, dr_vec4))
             fr_toch = False
-        vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
     else:
-        if fr_toch is False:
+        if fr_toch is False: #and len(abod) != 0:
+            vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
+            abod[-1].vec = vec_n
             abod[-1].react = True
             abod[-1].react_all = True
             #print("m_up")
