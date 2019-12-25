@@ -275,11 +275,6 @@ pause = False
 run = pau()
 
 while run:
-    # програмная пауза (без ввода)
-    if pause is True:
-        run = pau()
-        pause = False
-
     # условия окончания программы
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -317,7 +312,13 @@ while run:
                     i.pr("x",end="")
                     i.pr("y")
             elif event.key == K_SPACE:
-                run = pau()
+                #run = pau()
+                pause = True
+
+    # програмная пауза
+    if pause is True:
+        run = pau()
+        pause = False
 
     if touched is True:
         if fr_toch is True:
