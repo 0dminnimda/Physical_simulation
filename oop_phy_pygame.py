@@ -27,11 +27,10 @@ def vec_mul(arr, mul):
     return [i*mul for i in arr]
 
 # конвертация позиций нажатий в нужные значения
-def mp(sx, sy):
-    global scr
+def mp(sx, sy, scr, indx, indy): 
     mp = pygame.mouse.get_pos()
-    x = mp[0] - scr[0]/2
-    y = mp[1] - scr[1]/2
+    x = mp[0] - scr[0]/2 - scr[0]*indx/100
+    y = mp[1] - scr[1]/2 - scr[1]*indy/100
     x /= sx
     y /= sy
     return (x,y)
@@ -164,7 +163,7 @@ p = 1.91
 scax = scay = 50  #40*p#87.5*p
 
 # сдвиг, в % от всего изображения
-indx, indy = -50, 0 # percent
+indx, indy = -20, 0 # percent
 
 # реагирует ли тело на другие тела
 react1 = 1
@@ -271,7 +270,7 @@ i_conv = i_end = end_in = 0
 
 # нажатие
 touched = False
-fr_toch = True
+fr_toch = False
 
 run = True
 pause = False
@@ -338,8 +337,9 @@ while run:
 
     if touched is True:
         if fr_toch is True:
-            abod.append(body(3, mp(scax, scay), [0,0], step, col4, r4, rpath, draw4, react4, dr_vec4))
+            abod.append(body(3, mp(scax, scay, scr, indx, indy), [0,0], step, col4, r4, rpath, draw4, react4, dr_vec4))
             fr_toch = False
+            print("fr_to")
     else:
         fr_toch = True
 
