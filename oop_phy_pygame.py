@@ -263,7 +263,7 @@ while 1:
 
 while run:
     if pause is True:
-        pau()
+        run = pau()
     # условия окончания программы
     for event in pygame.event.get():
         if event.type == KEYDOWN:
