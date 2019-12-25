@@ -25,6 +25,16 @@ def ve_l(a):
 def vec_mul(arr, mul):
     return [i*mul for i in arr]
 
+#
+def mp(sx, sy):
+    global scr
+    mp = pygame.mouse.get_pos()
+    x = mp[0] - scr[0]/2
+    y = mp[1] - scr[1]/2
+    x /= sx
+    y /= sy
+    return (x,y)
+
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m1, m2, step):
     dist = ve_l(r)
@@ -256,6 +266,10 @@ conv_v = 5.125
 end_v = 20.5
 i_conv = i_end = end_in = 0
 
+
+touched = False
+fr_toch = True
+
 run = True
 pause = False
 run = pau()
@@ -268,6 +282,11 @@ while run:
 
     # условия окончания программы
     for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            touched = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            touched = False
+
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 run = False
@@ -300,6 +319,13 @@ while run:
             elif event.key == K_SPACE:
                 run = pau()
 
+    if touched is True:
+        if fr_toch is True:
+            abod.append(body(3, mp(scax, scay), [0,0], step, col4, r4, rpath, draw4, react4, dr_vec4))
+            fr_toch = False
+    else:
+        fr_toch = True
+
     # смена на следующий рисунок
     if cha is True and ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
         # print("big", ve_l([abod[1].x, abod[1].y]), end_v, end_n[i_end])
@@ -324,9 +350,9 @@ while run:
         conv_v += 5.125
         i_conv += 1
 
-    abod, bbbo = check(abod)
-    if bbbo is True:
-        pass #pause = True
+    abod, _ = check(abod)
+    '''if bbbo is True:
+        pause = True'''
 
     # цикл перечисляет все элементы
     # массива с телами
