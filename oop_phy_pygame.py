@@ -47,6 +47,7 @@ def check(arr):
     bo = False
     for i in range(len(arr)):
         if arr[i].live is False:
+            del arr[i]
             arr.insert(i, None)
             bo = True
             print(None)
@@ -106,7 +107,6 @@ class body():
 
         if ma.fabs(self.x) >= self.borderx or ma.fabs(self.y) >= self.bordery:
             self.live = False
-            print(self.live)
 
     # отрисовка положения тела
     def draw(self, path, scax, scay, indentx, indenty, type=1):
@@ -253,13 +253,7 @@ i_conv = i_end = end_in = 0
 
 run = True
 pause = False
-while 1:
-    event = pygame.event.wait()
-    if event.type == KEYDOWN and event.key == K_SPACE:
-        break
-    elif event.type == KEYDOWN and event.key == K_ESCAPE:
-        run = False
-        break
+run = pau()
 
 while run:
     if pause is True:
@@ -295,7 +289,7 @@ while run:
                 run = pau()
 
     # смена на следующий рисунок
-    if ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True and cha is True:
+    if cha is True and ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
         # print("big", ve_l([abod[1].x, abod[1].y]), end_v, end_n[i_end])
         dr_fr_path += 1
         a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
@@ -311,7 +305,7 @@ while run:
         end_in += 1
 
     # смена частота отрисовки
-    if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True and cha is True:
+    if cha is True and ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
         # print("min", ve_l([abod[1].x, abod[1].y]), conv_v, i_conv, len(conv_n), conv_n[i_conv])
         dr_fr_path += 1
         conv_n[i_conv] = False
@@ -320,13 +314,7 @@ while run:
 
     abod, bbbo = check(abod)
     if bbbo is True:
-        while 1:
-            event = pygame.event.wait()
-            if event.type == KEYDOWN and event.key == K_SPACE:
-                break
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                run = False
-                break
+        pass
 
     # цикл перечисляет все элементы
     # массива с телами
@@ -349,9 +337,8 @@ while run:
         if dr_txt is True:
             bla.blit(black, (0,0))
             path.blit(bla, rect)
-            some = ve_l([abod[1].x, abod[1].y]) 
+            some = len(abod)#ve_l([abod[1].x, abod[1].y]) 
             #end_in 
-            #len(abod)
             #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
             text1 = f1.render(str(some), 1, (0, 0, 255))
             path.blit(text1, sum_vec(rect, [5, 0]))
