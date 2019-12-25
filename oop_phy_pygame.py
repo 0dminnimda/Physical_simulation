@@ -71,7 +71,7 @@ def check(arr):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0, borx=10**5, bory=10**5):
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, react2, dr_vec, model=0, borx=10**5, bory=10**5):
         self.rad = 1*10**-5  # радиус тела
         self.borderx = borx  # границы
         self.bordery = bory  # границы
@@ -85,6 +85,7 @@ class body():
         self.r = r  # радиус отрисовки тел
         self.dr_bo = bool(dr)  # рисовать ли тело
         self.react = bool(react)  # реагирует ли тело на другие тела
+        self.react_all = bool(react2)  # реагируют ли другие тела на тело 
         self.dr_vec = bool(dr_vec)  # рисовать ли вектор
         self.model = model  # отрисует картинку вместо точки
 
@@ -107,7 +108,7 @@ class body():
             # если центры масс тел ближе чем
             # радиусы тел они не перестают
             # притягивать друг друга
-            if (ma.fabs(mx-dx) > rad or ma.fabs(my-dy) > rad) and self.react is True:
+            if (ma.fabs(mx-dx) > rad or ma.fabs(my-dy) > rad) and self.react is True and ob.react_all is True:
                 # вект скорости, вызванный ускор
                 # или же силой другого тела
                 add_vec = v_vec([-mx+dx, -my+dy], self.m, ob.m, self.step)
@@ -171,6 +172,12 @@ react2 = 1 #
 react3 = 1
 react4 = 1
 
+# реагируют ли другие тела на тело 
+reall1 = 1
+reall2 = 1
+reall3 = 1
+reall4 = 1
+
 # положение тел
 xp1, yp1 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)  -2.5
 xp2, yp2 = 0, 3 #ra.randint(-3, 3), ra.randint(-3, 3)
@@ -184,7 +191,7 @@ xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
-m1 = -1 #ra.randint(3, 7)
+m1 = 1 #ra.randint(3, 7)
 m2 = 1*10**0.5 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
@@ -227,10 +234,10 @@ star = pygame.transform.scale(star, (s, s))
 star.set_colorkey((255, 255, 255))
 
 # создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
-b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, model=star)
-c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3, react3, dr_vec3)
-d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4, dr_vec4)
+a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, model=star)
+c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3, react3, reall3, dr_vec3)
+d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4, reall4, dr_vec4)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
@@ -337,10 +344,14 @@ while run:
 
     if touched is True:
         if fr_toch is True:
-            abod.append(body(3, mp(scax, scay, scr, indx, indy), [0,0], step, col4, r4, rpath, draw4, react4, dr_vec4))
+            abod.append(body(3, mp(scax, scay, scr, indx, indy), [0,0], step, col4, r4, rpath, draw4, 0, 0, dr_vec4))
             fr_toch = False
             print("fr_to")
     else:
+        if fr_toch is False:
+            abod[-1].react = True
+            abod[-1].react_all = True
+            print("m_up")
         fr_toch = True
 
     # смена на следующий рисунок
