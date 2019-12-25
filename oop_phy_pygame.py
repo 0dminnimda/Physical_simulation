@@ -161,7 +161,7 @@ step = 1*10**-6.75
 
 # масштаб
 p = 1.91
-scax = scay = 100#40*p#87.5*p
+scax = scay = 100  #40*p#87.5*p
 
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
@@ -173,10 +173,10 @@ react3 = 1
 react4 = 1
 
 # положение тел
-xp1, yp1 = 0, 1 #ra.randint(-3, 3), ra.randint(-3, 3)#  -2.5
-xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)#
-xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
-xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)#
+xp1, yp1 = 0, 1 #ra.randint(-3, 3), ra.randint(-3, 3)  -2.5
+xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)
+xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)
+xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)
 
 # нач скорость
 xv1, yv1 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
@@ -280,16 +280,22 @@ run = pau()
 while run:
     # условия окончания программы
     for event in pygame.event.get():
+        # нажатия мышью / пальцем
         if event.type == pygame.MOUSEBUTTONDOWN:
             touched = True
         elif event.type == pygame.MOUSEBUTTONUP:
             touched = False
 
+        # нажатие клавиатуры
         if event.type == KEYDOWN:
+            # выход
             if event.key == K_ESCAPE:
                 run = False
+            # очистка экрана
             elif event.key == K_c:
                 path.blit(bgr,(0,0))
+
+            # ускороние
             elif event.key == K_a:
                 yv1 += 1/20
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
@@ -300,25 +306,32 @@ while run:
                 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
                 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 abod = [a, b]
+
+            # масштаб
             elif event.key == K_z:
                 scax -= 10
                 scay -= 10
             elif event.key == K_x:
                 scax += 10
                 scay += 10
+
+            # частота отрисовки
             elif event.key == K_o:
                 dr_fr_path += 1
             elif event.key == K_p:
                 dr_fr_path -= 1
+
+            # вывод положения тел в консоль
             elif event.key == K_f:
                 for i in abod:
                     i.pr("x",end="")
                     i.pr("y")
+            # пауза
             elif event.key == K_SPACE:
                 #run = pau()
                 pause = True
 
-    # програмная пауза
+    # выполнение паузы
     if pause is True:
         run = pau()
         pause = False
