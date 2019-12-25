@@ -280,6 +280,7 @@ i_conv = i_end = end_in = 0
 touched = False
 fr_toch = True
 vec_n = [0,0]
+pos_n = [0,0]
 
 run = True
 pause = False
@@ -404,6 +405,14 @@ while run:
 
     # раз в _ шагов отображаются все тела
     if co%dr_fr_bod == 0:
+        # создаём копию, чтобы не повредить
+        # основное изображение с путями
+        img = path.copy()
+
+        # рисуем вектор скорости нового тела
+        if touched is True:
+            pygame.draw.line(path, (0, 255, 0), pos_n, mp(scax, scay, scr, indx, indy), 3)
+
         # текст на изображении
         #bla.fill((0, 0, 0))
         if dr_txt is True:
@@ -414,9 +423,7 @@ while run:
             text1 = f1.render(str(some), 1, (0, 0, 255))
             path.blit(text1, sum_vec(rect, [5, 0]))
 
-        # создаём копию, чтобы не повредить
-        # основное изображение с путями
-        img = path.copy()
+        
         for i in range(len(abod)):
             # рисуем каждое тело
             path = abod[i].draw(path, scax, scay, indx, indy, type=0)
