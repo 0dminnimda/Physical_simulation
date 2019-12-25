@@ -35,18 +35,40 @@ def v_vec(r, m1, m2, step):
     r[1] = r[1]/k*step
     return r
 
+def pau():
+    while 1:
+        event = pygame.event.wait()
+        if event.type == KEYDOWN and event.key == K_SPACE:
+            return True
+        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            return False
+
+def check(arr):
+    bo = False
+    for i in range(len(arr)):
+        if arr[i].live is False:
+            arr.insert(i, None)
+            bo = True
+            print(None)
+
+    for _ in range(arr.count(None)):
+        arr.remove(None)
+    return arr, bo
+
 # класс физического тела
 class body():
     def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0):
-        self.rad = 1*10**-5 # радиус тела
-        self.m = m # масса
-        self.x, self.y = pos # положение (x,y)
-        self.vec = vec_mul(vec,10**-4.5) # вектор {x,y}
-        self.step = step # шаг времени
-        self.col = col # цвет отображения тел
-        self.r_path = r_path # радиус отрисовки тел
-        self.r = r # радиус отрисовки тел
-        self.dr_bo = bool(dr) # рисовать ли тело
+        self.rad = 1*10**-5  # радиус тела
+        self.borderx = self.bordery = 5  # границы
+        self.live = True  # существование
+        self.m = m  # масса
+        self.x, self.y = pos  # положение (x,y)
+        self.vec = vec_mul(vec,10**-4.5)  # вектор {x,y}
+        self.step = step  # шаг времени
+        self.col = col  # цвет отображения тел
+        self.r_path = r_path  # радиус отрисовки тел
+        self.r = r  # радиус отрисовки тел
+        self.dr_bo = bool(dr)  # рисовать ли тело
         self.react = bool(react)  # реагирует ли тело на другие тела
         self.dr_vec = bool(dr_vec)  # рисовать ли вектор
         self.model = model  # отрисует картинку вместо точки
@@ -81,6 +103,10 @@ class body():
         vec = self.vec
         self.x += vec[0]
         self.y += vec[1]
+
+        if ma.fabs(self.x) >= self.borderx or ma.fabs(self.y) >= self.bordery:
+            self.live = False
+            print(self.live)
 
     # отрисовка положения тела
     def draw(self, path, scax, scay, indentx, indenty, type=1):
@@ -120,14 +146,13 @@ step = 1*10**-6.75
 
 # масштаб
 p = 1.91
-scax = 40*p
-scay = 87.5*p
+scax = scay = 100#40*p#87.5*p
 # сдвиг, в % от всего изображения
-indx, indy = -50, 0 # percent
+indx, indy = 0, 0 # percent
 
 # реагирует ли тело на другие тела
 react1 = 1
-react2 = 0
+react2 = 1 #
 react3 = 1
 react4 = 1
 
@@ -163,19 +188,19 @@ dr_fr_path = 1 #+ 4*52
 dr_fr_bod = 300
 
 # радиус отрисовки тел
-r1 = r2 = r3 = r4 = 0
+r1 = r2 = r3 = r4 = 10
 
 # радиус пути
 rpath = 1
 
 # отрисовка тел
 draw1 = 1
-draw2 = 0
+draw2 = 1 #
 draw3 = 1
 draw4 = 1
 
 # отрисовка векторов
-dr_vec1 = 0
+dr_vec1 = 1 #
 dr_vec2 = 1
 dr_vec3 = 1
 dr_vec4 = 1
@@ -200,7 +225,7 @@ abod = [a, b]
 for i in abod:
     i.pr()
 
-# шаг
+# счётчик
 co = 0
 
 f1 = pygame.font.SysFont("arial", 20)
@@ -219,6 +244,7 @@ pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-1,-1])), 1)
 black = bla.copy()
 
 # параметры для шоу частота отрисовки
+cha = False
 conv_n = [True for _ in range(3)]
 end_n = [True for _ in range(2)]
 conv_v = 5.125
@@ -226,6 +252,7 @@ end_v = 20.5
 i_conv = i_end = end_in = 0
 
 run = True
+pause = False
 while 1:
     event = pygame.event.wait()
     if event.type == KEYDOWN and event.key == K_SPACE:
@@ -235,6 +262,8 @@ while 1:
         break
 
 while run:
+    if pause is True:
+        pau()
     # условия окончания программы
     for event in pygame.event.get():
         if event.type == KEYDOWN:
@@ -262,32 +291,11 @@ while run:
                 dr_fr_path += 1
             elif event.key == K_p:
                 dr_fr_path -= 1
-            #elif event.key == K_r:
-            #    xv1, yv1 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-            #    xv2, yv2 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-            #    xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-            #    xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-            #    m1 = ra.randint(3, 7)
-            #    m2 = ra.randint(3, 7)
-            #    m3 = ra.randint(3, 7)
-            #    m4 = ra.randint(3, 7)
-            #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1)
-            #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2)
-            #    c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3)
-            #    d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4)
-            #    abod = [a, b, c, d]
-            #    path.fill((0, 0, 0))
             elif event.key == K_SPACE:
-                while 1:
-                    event = pygame.event.wait()
-                    if event.type == KEYDOWN and event.key == K_SPACE:
-                        break
-                    elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                        run = False
-                        break
+                run = pau()
 
     # смена на следующий рисунок
-    if ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
+    if ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True and cha is True:
         # print("big", ve_l([abod[1].x, abod[1].y]), end_v, end_n[i_end])
         dr_fr_path += 1
         a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
@@ -303,12 +311,22 @@ while run:
         end_in += 1
 
     # смена частота отрисовки
-    if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
+    if ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True and cha is True:
         # print("min", ve_l([abod[1].x, abod[1].y]), conv_v, i_conv, len(conv_n), conv_n[i_conv])
         dr_fr_path += 1
         conv_n[i_conv] = False
         conv_v += 5.125
         i_conv += 1
+
+    abod, bbbo = check(abod)
+    if bbbo is True:
+        while 1:
+            event = pygame.event.wait()
+            if event.type == KEYDOWN and event.key == K_SPACE:
+                break
+            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                run = False
+                break
 
     # цикл перечисляет все элементы
     # массива с телами
@@ -331,7 +349,9 @@ while run:
         if dr_txt is True:
             bla.blit(black, (0,0))
             path.blit(bla, rect)
-            some = end_in #ve_l([abod[1].x, abod[1].y])
+            some = ve_l([abod[1].x, abod[1].y]) 
+            #end_in 
+            #len(abod)
             #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
             text1 = f1.render(str(some), 1, (0, 0, 255))
             path.blit(text1, sum_vec(rect, [5, 0]))
