@@ -11,8 +11,8 @@ from pygame.locals import *
 pygame.init()
 
 # сложение друх векторов
-def add_vec(v, w):
-    return [vi + wi for vi, wi in zip(v, w)]
+def add_vec(v, w, sign=1):
+    return [vi + wi*sign for vi, wi in zip(v, w)]
 
 # сложение нескольких векторов
 def sum_vec(*vecs):
@@ -278,6 +278,7 @@ i_conv = i_end = end_in = 0
 # нажатие
 touched = False
 fr_toch = False
+vec_n = [0,0]
 
 run = True
 pause = False
@@ -344,15 +345,18 @@ while run:
 
     if touched is True:
         if fr_toch is True:
-            abod.append(body(3, mp(scax, scay, scr, indx, indy), [0,0], step, col4, r4, rpath, draw4, 0, 0, dr_vec4))
+            pos_n = mp(scax, scay, scr, indx, indy)
+            #print("fr_to")
+            abod.append(body(3, pos_n, [0,0], step, col4, r4, rpath, draw4, 0, 0, dr_vec4))
             fr_toch = False
-            print("fr_to")
+        vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
     else:
         if fr_toch is False:
             abod[-1].react = True
             abod[-1].react_all = True
-            print("m_up")
-        fr_toch = True
+            #print("m_up")
+            print(vec_n)
+            fr_toch = True
 
     # смена на следующий рисунок
     if cha is True and ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
