@@ -21,6 +21,7 @@ def sum_vec(*vecs):
 def ve_l(a):
     return np.linalg.norm(a)
 
+# умножение модуля
 def vec_mul(arr, mul):
     return [i*mul for i in arr]
 
@@ -35,6 +36,7 @@ def v_vec(r, m1, m2, step):
     r[1] = r[1]/k*step
     return r
 
+# пауза
 def pau():
     while 1:
         event = pygame.event.wait()
@@ -43,6 +45,7 @@ def pau():
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             return False
 
+# проверка на существование
 def check(arr):
     bo = False
     for i in range(len(arr)):
@@ -50,10 +53,10 @@ def check(arr):
             del arr[i]
             arr.insert(i, None)
             bo = True
-            print(None)
 
     for _ in range(arr.count(None)):
         arr.remove(None)
+
     return arr, bo
 
 # класс физического тела
@@ -256,8 +259,11 @@ pause = False
 run = pau()
 
 while run:
+    # програмная пауза (без ввода)
     if pause is True:
         run = pau()
+        pause = False
+
     # условия окончания программы
     for event in pygame.event.get():
         if event.type == KEYDOWN:
@@ -314,7 +320,7 @@ while run:
 
     abod, bbbo = check(abod)
     if bbbo is True:
-        pass
+        pause = True
 
     # цикл перечисляет все элементы
     # массива с телами
@@ -337,8 +343,7 @@ while run:
         if dr_txt is True:
             bla.blit(black, (0,0))
             path.blit(bla, rect)
-            some = len(abod)#ve_l([abod[1].x, abod[1].y]) 
-            #end_in 
+            some = len(abod)#ve_l([abod[1].x, abod[1].y]) #end_in 
             #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
             text1 = f1.render(str(some), 1, (0, 0, 255))
             path.blit(text1, sum_vec(rect, [5, 0]))
