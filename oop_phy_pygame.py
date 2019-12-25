@@ -61,9 +61,10 @@ def check(arr):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0):
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0, borx=10, bory=10):
         self.rad = 1*10**-5  # радиус тела
-        self.borderx = self.bordery = 5  # границы
+        self.borderx = borx  # границы
+        self.bordery = bory  # границы
         self.live = True  # существование
         self.m = m  # масса
         self.x, self.y = pos  # положение (x,y)
@@ -216,7 +217,7 @@ star.set_colorkey((255, 255, 255))
 
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
-b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, star)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, model=star)
 c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3, react3, dr_vec3)
 d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4, dr_vec4)
 
@@ -231,12 +232,13 @@ for i in abod:
 # счётчик
 co = 0
 
+scr = (1540, 801) #(1920, 1080)
 f1 = pygame.font.SysFont("arial", 20)
 bgr = pygame.image.load('space2.jpg')
 #bgr = bgr.convert()
-path = pygame.display.set_mode((1540, 801), RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
+path = pygame.display.set_mode(scr, RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
 #path.set_alpha(100)
-bgr = pygame.transform.scale(bgr, (1540, 801))
+bgr = pygame.transform.scale(bgr, scr)
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause and [esc] to escape")
 siz = (240, 25)
@@ -291,6 +293,10 @@ while run:
                 dr_fr_path += 1
             elif event.key == K_p:
                 dr_fr_path -= 1
+            elif event.key == K_f:
+                for i in abod:
+                    i.pr("x",end="")
+                    i.pr("y")
             elif event.key == K_SPACE:
                 run = pau()
 
@@ -320,7 +326,7 @@ while run:
 
     abod, bbbo = check(abod)
     if bbbo is True:
-        pause = True
+        pass #pause = True
 
     # цикл перечисляет все элементы
     # массива с телами
