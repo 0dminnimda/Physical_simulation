@@ -7,6 +7,7 @@ import math as ma
 from pygame.locals import *
 
 
+# инициализация pygame
 pygame.init()
 
 # сложение друх векторов
@@ -25,7 +26,7 @@ def ve_l(a):
 def vec_mul(arr, mul):
     return [i*mul for i in arr]
 
-#
+# конвертация позиций нажатий в нужные значения
 def mp(sx, sy):
     global scr
     mp = pygame.mouse.get_pos()
@@ -161,6 +162,7 @@ step = 1*10**-6.75
 # масштаб
 p = 1.91
 scax = scay = 100#40*p#87.5*p
+
 # сдвиг, в % от всего изображения
 indx, indy = 0, 0 # percent
 
@@ -219,11 +221,11 @@ dr_vec2 = 1
 dr_vec3 = 1
 dr_vec4 = 1
 
+# импорт картинки
 star = pygame.image.load('star2.png')  #.convert()
 s = 50
 star = pygame.transform.scale(star, (s, s))
 star.set_colorkey((255, 255, 255))
-
 
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
@@ -242,15 +244,16 @@ for i in abod:
 # счётчик
 co = 0
 
+# импорт картинки, реализация экрана
 scr = (1540, 801) #(1920, 1080)
-f1 = pygame.font.SysFont("arial", 20)
 bgr = pygame.image.load('space2.jpg')
-#bgr = bgr.convert()
-path = pygame.display.set_mode(scr, RESIZABLE)  # FULLSCREEN) .convert() , SRCALPHA
-#path.set_alpha(100)
+path = pygame.display.set_mode(scr, RESIZABLE)  # FULLSCREEN) , SRCALPHA  path.set_alpha(100)
 bgr = pygame.transform.scale(bgr, scr)
 path.blit(bgr,(0,0))
 pygame.display.set_caption("Press [Space] to play/pause and [esc] to escape")
+
+# реализация текста
+f1 = pygame.font.SysFont("arial", 20)
 siz = (240, 25)
 rect = (10, 10)
 bla = pygame.Surface(siz)
@@ -266,7 +269,7 @@ conv_v = 5.125
 end_v = 20.5
 i_conv = i_end = end_in = 0
 
-
+# нажатие
 touched = False
 fr_toch = True
 
