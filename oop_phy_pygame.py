@@ -39,8 +39,8 @@ def mp(sx, sy):
 # вычисл вект скорости напрпр к др телу
 def v_vec(r, m1, m2, step):
     dist = ve_l(r)
-    f = dist**2/m1*m2
-    #m1*m2/dist**2
+    f = m1*m2/dist**2
+    #dist**2/m1*m2
     a = f/m1
     k = dist/a
     r[0] = r[0]/k*step
@@ -72,7 +72,7 @@ def check(arr):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0, borx=10, bory=10):
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, dr_vec, model=0, borx=10**5, bory=10**5):
         self.rad = 1*10**-5  # радиус тела
         self.borderx = borx  # границы
         self.bordery = bory  # границы
@@ -161,10 +161,10 @@ step = 1*10**-6.75
 
 # масштаб
 p = 1.91
-scax = scay = 100  #40*p#87.5*p
+scax = scay = 50  #40*p#87.5*p
 
 # сдвиг, в % от всего изображения
-indx, indy = 0, 0 # percent
+indx, indy = -50, 0 # percent
 
 # реагирует ли тело на другие тела
 react1 = 1
@@ -173,8 +173,8 @@ react3 = 1
 react4 = 1
 
 # положение тел
-xp1, yp1 = 0, 1 #ra.randint(-3, 3), ra.randint(-3, 3)  -2.5
-xp2, yp2 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)
+xp1, yp1 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)  -2.5
+xp2, yp2 = 0, 3 #ra.randint(-3, 3), ra.randint(-3, 3)
 xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)
 xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)
 
@@ -185,8 +185,8 @@ xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
 
 # масса
-m1 = 1 #ra.randint(3, 7)
-m2 = 1*10**4 #ra.randint(3, 7)
+m1 = -1 #ra.randint(3, 7)
+m2 = 1*10**0.5 #ra.randint(3, 7)
 m3 = ra.randint(3, 7)
 m4 = ra.randint(3, 7)
 
@@ -235,7 +235,7 @@ d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4, dr_ve
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
-abod = [a, b]
+abod = [a,b]
 
 # печать всех значений self для всех тел
 for i in abod:
