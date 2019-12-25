@@ -71,7 +71,7 @@ def check(arr):
 
 # класс физического тела
 class body():
-    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, react2, dr_vec, model=0, borx=10**5, bory=10**5):
+    def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, react2, dr_vec, model=0, borx=10**2.5, bory=10**2.5):
         self.rad = 1*10**-5  # радиус тела
         self.borderx = borx  # границы
         self.bordery = bory  # границы
