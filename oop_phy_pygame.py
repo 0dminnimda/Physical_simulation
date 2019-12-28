@@ -200,13 +200,6 @@ class body():
 # шаг времени
 step = 1*10**-6.75
 
-# масштаб
-p = 1.91
-scax = scay = 50  #40*p#87.5*p
-
-# сдвиг, в % от всего изображения
-indx, indy = 0, 0 # percent
-
 # границы
 bor = (0, 0) #(16, 8)
 
@@ -263,6 +256,21 @@ scr = (1540, 801)  #(1080, 2340)
 path, bgr = main_relise("space2.jpg", scr)
 star = img_imp("star2.png", 50, (255, 255, 255))
 
+# масштаб
+p = 1.91
+scax = scay = 50  #40*p#87.5*p
+
+# сдвиг, в % от всего изображения
+indx, indy = 0, 0 # percent
+
+# создание экземпляра класса
+a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, bor,  model=star)
+
+# массив со всеми телами, что
+# будут использоваться в симуляции
+abod = [a,b]
+
 # реализация текста
 dr_txt = bool( 1 )
 f_siz = 30
@@ -279,171 +287,172 @@ conv_v = 5.125
 end_v = 20.5
 i_conv = i_end = end_in = 0
 
-# нажатие
-touched = False
-fr_toch = True
-vec_n = pos_n = [0,0]
+txt = dr_txt, st_point, font, bla, black
+draw = scr, path, bgr, dr_fr_path, dr_fr_bod
+correction = scax, scay, indx, indy
 
-# создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
-b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, bor,  model=star)
+def main_f(abod, draw, txt, cha, correction):
 
-# массив со всеми телами, что
-# будут использоваться в симуляции
-abod = [a,b]
+    dr_txt, st_point, font, bla, black = txt
+    scr, path, bgr, dr_fr_path, dr_fr_bod = draw
+    scax, scay, indx, indy = correction
 
-# печать всех значений self для всех тел
-for i in abod:
-    i.pr()
+    # нажатие
+    touched = False
+    fr_toch = True
+    vec_n = pos_n = [0,0]
 
-run = True
-pause = False
-run = pau()
+    # предобъявление
+    run = True
+    pause = False
+    run = pau()
 
-# счётчик
-co = 0
+    # счётчик
+    co = 0
 
-while run:
-    # условия окончания программы
-    for event in pygame.event.get():
-        # нажатия мышью / пальцем
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            touched = True
-        elif event.type == pygame.MOUSEBUTTONUP:
-            touched = False
+    while run:
+        # условия окончания программы
+        for event in pygame.event.get():
+            # нажатия мышью / пальцем
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                touched = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                touched = False
 
-        # нажатие клавиатуры
-        if event.type == KEYDOWN:
-            # выход
-            if event.key == K_ESCAPE:
-                run = False
-            # очистка экрана
-            elif event.key == K_c:
-                path.blit(bgr,(0,0))
+            # нажатие клавиатуры
+            if event.type == KEYDOWN:
+                # выход
+                if event.key == K_ESCAPE:
+                    run = False
+                # очистка экрана
+                elif event.key == K_c:
+                    path.blit(bgr,(0,0))
 
-            # ускороние
-            #elif event.key == K_a:
-            #    yv1 += 1/20
-            #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-            #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
-            #    abod = [a, b]
-            #elif event.key == K_s:
-            #    yv1 -= 1/20
-            #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-            #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
-            #    abod = [a, b]
+                # ускороние
+                #elif event.key == K_a:
+                #    yv1 += 1/20
+                #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
+                #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
+                #    abod = [a, b]
+                #elif event.key == K_s:
+                #    yv1 -= 1/20
+                #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
+                #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
+                #    abod = [a, b]
 
-            # масштаб
-            elif event.key == K_z:
-                scax -= 10
-                scay -= 10
-            elif event.key == K_x:
-                scax += 10
-                scay += 10
+                # масштаб
+                elif event.key == K_z:
+                    scax -= 10
+                    scay -= 10
+                elif event.key == K_x:
+                    scax += 10
+                    scay += 10
 
-            # частота отрисовки
-            elif event.key == K_o:
-                dr_fr_path += 1
-            elif event.key == K_p:
-                dr_fr_path -= 1
+                # частота отрисовки
+                elif event.key == K_o:
+                    dr_fr_path += 1
+                elif event.key == K_p:
+                    dr_fr_path -= 1
 
-            # вывод положения тел в консоль
-            elif event.key == K_f:
-                for i in abod:
-                    i.pr("x",end="")
-                    i.pr("y")
+                # вывод положения тел в консоль
+                elif event.key == K_f:
+                    for i in abod:
+                        i.pr("x",end="")
+                        i.pr("y")
 
-            elif event.key == K_d:
-                abod = []
-                path.blit(bgr,(0,0))
+                elif event.key == K_d:
+                    abod = []
+                    path.blit(bgr,(0,0))
 
-            # пауза
-            elif event.key == K_SPACE:
-                #run = pau()
-                pause = bool((int(pause)+1)%2)
+                # пауза
+                elif event.key == K_SPACE:
+                    #run = pau()
+                    pause = bool((int(pause)+1)%2)
 
-    # создание нового объекта, с помощью касания
-    if touched is True:
-        if fr_toch is True:
-            st_p_n = pygame.mouse.get_pos()
-            col_n = rand_c()
-            pos_n = mp(scax, scay, scr, indx, indy)
-            abod.append(body(ri(1,5), pos_n, [0,0], step, col_n, r_n, rpath, draw_n, 0, 0, dr_vec_n, bor))
-            fr_toch = False
-    elif fr_toch is False:
-        vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
-        abod[-1].vec = vec_mul(vec_n, 10**-4.5)
-        abod[-1].react = True
-        abod[-1].react_all = True
-        fr_toch = True
-
-    # смена на следующий рисунок
-    if cha is True and ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
-        dr_fr_path += 1
-        a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
-        b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, star)
-        abod = [a, b]
-        path.blit(bgr,(0,0))
-        conv_n = [True for _ in range(3)]
-        i_conv = 0
-        conv_v = 5.125
-        i_end = (i_end + 1)%2
-        end_n[0] = end_n[1]
-        end_n[1] = True
-        end_in += 1
-
-    # смена частота отрисовки
-    if cha is True and ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
-        dr_fr_path += 1
-        conv_n[i_conv] = False
-        conv_v += 5.125
-        i_conv += 1
-
-    abod, _ = check(abod)
-
-    # цикл перечисляет все элементы
-    # массива с телами
-    for i in range(len(abod)):
-        other = abod[:]
-        del other[i]
-        # симуляция взаимействия
-        # на тело i действуют тела other
-        # и оно реагирует ( движется или стоит)
-        if pause is False:
-            abod[i].calc(*other)
-
-        # раз в _ шагов отображаются все пути тел
-        if co%dr_fr_path == 0:
-            path = abod[i].draw(path, scax, scay, indx, indy)
-
-    # раз в _ шагов отображаются все тела
-    if co%dr_fr_bod == 0:
-        # создаём копию, чтобы не повредить
-        # основное изображение с путями
-        img = path.copy()
-
-        # рисуем вектор скорости нового тела
+        # создание нового объекта, с помощью касания
         if touched is True:
-            dr_t_v = turn(pygame.mouse.get_pos(), st_p_n)
-            pygame.draw.line(path, col_n, st_p_n, dr_t_v, st_vec_r)
+            if fr_toch is True:
+                st_p_n = pygame.mouse.get_pos()
+                col_n = rand_c()
+                pos_n = mp(scax, scay, scr, indx, indy)
+                abod.append(body(ri(1,5), pos_n, [0,0], step, col_n, r_n, rpath, draw_n, 0, 0, dr_vec_n, bor))
+                fr_toch = False
+        elif fr_toch is False:
+            vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
+            abod[-1].vec = vec_mul(vec_n, 10**-4.5)
+            abod[-1].react = True
+            abod[-1].react_all = True
+            fr_toch = True
 
-        # текст на изображении
-        if dr_txt is True:
-            bla.blit(black, (0,0))
-            path.blit(bla, st_point)
-            some = len(abod)#ve_l([abod[1].x, abod[1].y]) #end_in 
-            #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
-            text1 = font.render(str(some), 1, (0, 0, 255))
-            path.blit(text1, sum_vec(st_point, [5, 0]))
+        # смена на следующий рисунок
+        if cha is True and ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
+            dr_fr_path += 1
+            a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, dr_vec1)
+            b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, dr_vec2, star)
+            abod = [a, b]
+            path.blit(bgr,(0,0))
+            conv_n = [True for _ in range(3)]
+            i_conv = 0
+            conv_v = 5.125
+            i_end = (i_end + 1)%2
+            end_n[0] = end_n[1]
+            end_n[1] = True
+            end_in += 1
 
+        # смена частота отрисовки
+        if cha is True and ve_l([abod[1].x, abod[1].y]) > conv_v and i_conv < len(conv_n) and conv_n[i_conv] is True:
+            dr_fr_path += 1
+            conv_n[i_conv] = False
+            conv_v += 5.125
+            i_conv += 1
+
+        abod, _ = check(abod)
+
+        # цикл перечисляет все элементы
+        # массива с телами
         for i in range(len(abod)):
-            # рисуем каждое тело
-            path = abod[i].draw(path, scax, scay, indx, indy, type=0)
+            other = abod[:]
+            del other[i]
+            # симуляция взаимействия
+            # на тело i действуют тела other
+            # и оно реагирует ( движется или стоит)
+            if pause is False:
+                abod[i].calc(*other)
 
-        pygame.display.update()
-        path.blit(img, (0,0))
+            # раз в _ шагов отображаются все пути тел
+            if co%dr_fr_path == 0:
+                path = abod[i].draw(path, scax, scay, indx, indy)
 
-    # добавление шага
-    co += 1
+        # раз в _ шагов отображаются все тела
+        if co%dr_fr_bod == 0:
+            # создаём копию, чтобы не повредить
+            # основное изображение с путями
+            img = path.copy()
+
+            # рисуем вектор скорости нового тела
+            if touched is True:
+                dr_t_v = turn(pygame.mouse.get_pos(), st_p_n)
+                pygame.draw.line(path, col_n, st_p_n, dr_t_v, st_vec_r)
+
+            # текст на изображении
+            if dr_txt is True:
+                bla.blit(black, (0,0))
+                path.blit(bla, st_point)
+                some = len(abod)#ve_l([abod[1].x, abod[1].y]) #end_in 
+                #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
+                text1 = font.render(str(some), 1, (0, 0, 255))
+                path.blit(text1, sum_vec(st_point, [5, 0]))
+
+            for i in range(len(abod)):
+                # рисуем каждое тело
+                path = abod[i].draw(path, scax, scay, indx, indy, type=0)
+
+            pygame.display.update()
+            path.blit(img, (0,0))
+
+        # добавление шага
+        co += 1
+
+main_f(abod, draw, txt, cha, correction)
 
 #if __name__ == '__main__':
