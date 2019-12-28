@@ -112,7 +112,7 @@ def font_rel(f_siz, num_symol, fram_r, fram_c, txt_font="arial"):
 class body():
     def __init__(self, m, pos, vec, phy, draw, model=0):
         step, border, react, react2 = phy
-        col, r, r_path, dr, dr_vec = draw
+        col, r_path, r, dr, dr_vec = draw
 
         self.rad = 1*10**-5  # радиус тела
         self.borderx, self.bordery = border  # границы
@@ -285,7 +285,7 @@ def main_f(abod, draw, txt, show, correction):
                 st_p_n = pygame.mouse.get_pos()
                 col_n = rand_c()
                 pos_n = mp(scax, scay, scr, indx, indy)
-                abod.append(body(ri(1,5), pos_n, [0,0], (step, border, 0, 0), (col_n, r_n, rpath, draw_n, dr_vec_n)))
+                abod.append(body(ri(1,5), pos_n, [0,0], (step, border, 0, 0), (col_n, rpath, r_n, draw_n, dr_vec_n)))
                 fr_toch = False
         elif fr_toch is False:
             vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
@@ -400,11 +400,11 @@ reall2 = 1
 col1 = (0, 0, 255)
 col2 = (255, 0, 0)
 
-# радиус отрисовки тел
-r1 = r2 = r3 = r4 = r_n = 10
-
 # радиус пути
 rpath = 1
+
+# радиус отрисовки тел
+r1 = r2 = r3 = r4 = r_n = 10
 
 # отрисовка тел
 draw1 = 1
@@ -416,18 +416,18 @@ dr_vec1 = 1 #
 dr_vec2 = 1
 dr_vec_n = 1
 
+# толщина линии вектора нач скорости
+# при создании нового тела
+st_vec_r = 6
+
+# частота отрисовки
+dr_fr_path = 1 #+ 4*52
+dr_fr_body = 300
+
 # импорт картинки, реализация экрана
 scr = (1540, 801)  #(1080, 2340)
 path, bgr = main_relise("space2.jpg", scr)
 star = img_imp("star2.png", 50, (255, 255, 255))
-
-# частота отрисовки
-dr_fr_path = 1 #+ 4*52
-dr_fr_bod = 300
-
-# толщина линии вектора нач скорости
-# при создании нового тела
-st_vec_r = 6
 
 # реализация текста
 dr_txt = bool( 1 )
@@ -446,21 +446,20 @@ end_v = 20.5
 i_conv = i_end = end_in = 0
 
 # создание экземпляра класса
-#(m1, [xp1, yp1], [xv1, yv1], (step, border, react1, reall1), (col1, r1, rpath, draw1, dr_vec1))
-a = body(m1, [xp1, yp1], [xv1, yv1], (step, border, react1, reall1), (col1, r1, rpath, draw1, dr_vec1))
-b = body(m2, [xp2, yp2], [xv2, yv2], (step, border, react2, reall2), (col1, r2, rpath, draw2, dr_vec2), model=star)
+a = body(m1, [xp1, yp1], [xv1, yv1], (step, border, react1, reall1), (col1, rpath, r1, draw1, dr_vec1))
+b = body(m2, [xp2, yp2], [xv2, yv2], (step, border, react2, reall2), (col1, rpath, r2, draw2, dr_vec2), model=star)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
-abod = [a,b]
+all_bodies = [a,b]
 
 # создаём "упаковки" для информации
 txt = dr_txt, st_point, font, bla, black
-draw = scr, path, bgr, dr_fr_path, dr_fr_bod
+draw = scr, path, bgr, dr_fr_path, dr_fr_body
 correction = scax, scay, indx, indy
 show = cha, conv_n, end_n, conv_v, end_v, i_conv
 
 if __name__ == '__main__':
 
 
-    main_f(abod, draw, txt, show, correction)
+    main_f(all_bodies, draw, txt, show, correction)
