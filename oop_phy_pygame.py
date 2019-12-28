@@ -197,26 +197,29 @@ class body():
 
         return path
 
+# главная функция
 def main_f(abod, phy, draw, txt, show, correction):
 
-    dr_txt, st_point, font, bla, black = txt
-    scr, path, bgr, dr_fr_path, dr_fr_bod = draw
-    scax, scay, indx, indy = correction
-    cha, conv_n, end_n, conv_v, end_v, i_conv = show
-    step, border, rpath, r_n, draw_n, dr_vec_n, st_vec_r = phy
+    # сокращение
+    for _ in range(1):
+        dr_txt, st_point, font, bla, black = txt
+        scr, path, bgr, dr_fr_path, dr_fr_bod = draw
+        scax, scay, indx, indy = correction
+        cha, conv_n, end_n, conv_v, end_v, i_conv = show
+        step, border, rpath, r_n, draw_n, dr_vec_n, st_vec_r = phy
 
-    # нажатие
-    touched = False
-    fr_toch = True
-    vec_n = pos_n = [0,0]
+        # нажатие
+        touched = False
+        fr_toch = True
+        vec_n = pos_n = [0,0]
 
-    # предобъявление
-    run = True
-    pause = False
-    run = pau()
+        # предобъявление
+        run = True
+        pause = False
+        run = pau()
 
-    # счётчик
-    co = 0
+        # счётчик
+        co = 0
 
     while run:
         # условия окончания программы
