@@ -101,7 +101,7 @@ def img_imp(img, size=None, alpha=None):
 # реализация текста
 def font_rel(f_siz, num_symol, fram_r, fram_c, txt_font="arial"):
     font = pygame.font.SysFont(txt_font, f_siz)
-    siz = (f_siz*0.65*num_symol, f_siz)
+    siz = (f_siz*0.65*num_symol, f_siz*1.1)
     bla = pygame.Surface(siz)
     bla.fill((0, 0, 0))
     pygame.draw.rect(bla, fram_c, (1,1, *sum_vec(siz, [-2,-2])), fram_r)
@@ -261,14 +261,13 @@ dr_vec_n = 1
 # импорт картинки, реализация экрана
 scr = (1540, 801)  #(1080, 2340)
 path, bgr = main_relise("space2.jpg", scr)
-
 star = img_imp("star2.png", 50, (255, 255, 255))
 
 # реализация текста
 dr_txt = bool( 1 )
-f_siz = 75
+f_siz = 30
 num_symol = 6
-st_point = (50, 50)
+st_point = (15, 15)
 fram_c = (127, 127, 127)
 font, bla, black = font_rel(f_siz, num_symol, 1, fram_c)
 
@@ -357,12 +356,15 @@ while run:
             # пауза
             elif event.key == K_SPACE:
                 #run = pau()
-                pause = True
+                pause = bool((int(pause)+1)%2)
 
     # выполнение паузы
-    if pause is True:
-        run = pau()
+    '''if pause is True:
+        #if paus == 1:
+        #run = pau()
         pause = False
+        #paus = 0
+        print("exit")'''
 
     # создание нового объекта, с помощью касания
     if touched is True:
@@ -414,7 +416,8 @@ while run:
         # симуляция взаимействия
         # на тело i действуют тела other
         # и оно реагирует ( движется или стоит)
-        abod[i].calc(*other)
+        if pause is False:
+            abod[i].calc(*other)
 
         # раз в _ шагов отображаются все пути тел
         if co%dr_fr_path == 0:
