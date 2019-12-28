@@ -98,6 +98,16 @@ def img_imp(img, size=None, alpha=None):
         star.set_colorkey(alpha)
     return star
 
+# реализация текста
+def font_rel(f_siz, num_symol, fram_r, fram_c, txt_font="arial"):
+    font = pygame.font.SysFont(txt_font, f_siz)
+    siz = (f_siz*0.65*num_symol, f_siz)
+    bla = pygame.Surface(siz)
+    bla.fill((0, 0, 0))
+    pygame.draw.rect(bla, fram_c, (1,1, *sum_vec(siz, [-2,-2])), fram_r)
+    black = bla.copy()
+    return font, bla, black
+
 # класс физического тела
 class body():
     def __init__(self, m, pos, vec, step, col, r, r_path, dr, react, react2, dr_vec, bor, model=0):
@@ -224,11 +234,6 @@ m2 = 1*10**0.5 #ra.randint(3, 7)
 col1 = (0, 0, 255)
 col2 = (255, 0, 0)
 
-# отрисовка текста
-dr_txt = bool( 1 )
-f_siz = 75
-num_sym = 6
-
 # частота отрисовки
 dr_fr_path = 1 #+ 4*52
 dr_fr_bod = 300
@@ -260,13 +265,12 @@ path, bgr = main_relise("space2.jpg", scr)
 star = img_imp("star2.png", 50, (255, 255, 255))
 
 # реализация текста
-rect = (50, 50)
-f1 = pygame.font.SysFont("arial", f_siz)
-siz = (f_siz*0.65*num_sym, f_siz)
-bla = pygame.Surface(siz)
-bla.fill((0, 0, 0))
-pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-2,-2])), 1)
-black = bla.copy()
+dr_txt = bool( 1 )
+f_siz = 75
+num_symol = 6
+st_point = (50, 50)
+fram_c = (127, 127, 127)
+font, bla, black = font_rel(f_siz, num_symol, 1, fram_c)
 
 # параметры для шоу частота отрисовки
 cha = False
@@ -281,7 +285,6 @@ touched = False
 fr_toch = True
 vec_n = [0,0]
 pos_n = [0,0]
-
 
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
@@ -433,11 +436,11 @@ while run:
         #bla.fill((0, 0, 0))
         if dr_txt is True:
             bla.blit(black, (0,0))
-            path.blit(bla, rect)
+            path.blit(bla, st_point)
             some = len(abod)#ve_l([abod[1].x, abod[1].y]) #end_in 
             #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
-            text1 = f1.render(str(some), 1, (0, 0, 255))
-            path.blit(text1, sum_vec(rect, [5, 0]))
+            text1 = font.render(str(some), 1, (0, 0, 255))
+            path.blit(text1, sum_vec(st_point, [5, 0]))
 
         for i in range(len(abod)):
             # рисуем каждое тело
