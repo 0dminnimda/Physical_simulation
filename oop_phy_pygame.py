@@ -253,31 +253,11 @@ dr_vec1 = 1 #
 dr_vec2 = 1
 dr_vec_n = 1
 
-# импорт картинки
-s = 50
-img2 = 'star2.png'
-alpha = (255, 255, 255)
-
-# создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
-b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, bor,  model=star)
-
-# массив со всеми телами, что
-# будут использоваться в симуляции
-abod = [a,b]
-#abod = []
-
-# печать всех значений self для всех тел
-for i in abod:
-    i.pr()
-
-# счётчик
-co = 0
-
 # импорт картинки, реализация экрана
 scr = (1540, 801)  #(1080, 2340)
-img = 'space2.jpg'
-path, bgr = main_relise(img, scr)
+path, bgr = main_relise("space2.jpg", scr)
+
+star = img_imp("star2.png", 50, (255, 255, 255))
 
 # реализация текста
 rect = (50, 50)
@@ -302,9 +282,25 @@ fr_toch = True
 vec_n = [0,0]
 pos_n = [0,0]
 
+
+# создание экземпляра класса
+a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, bor,  model=star)
+
+# массив со всеми телами, что
+# будут использоваться в симуляции
+abod = [a,b]
+
+# печать всех значений self для всех тел
+for i in abod:
+    i.pr()
+
 run = True
 pause = False
 run = pau()
+
+# счётчик
+co = 0
 
 while run:
     # условия окончания программы
