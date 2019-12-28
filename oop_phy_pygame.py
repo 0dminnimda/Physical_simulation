@@ -79,6 +79,15 @@ def turn(point, center):
     x = center[0] + (center[0] - point[0])
     y = center[1] + (center[1] - point[1])
     return (x,y)
+
+# импорт картинки, реализация экрана
+def main_relise(img, scr):
+    bgr = pygame.image.load(img)
+    path = pygame.display.set_mode(scr, RESIZABLE)  # FULLSCREEN) , SRCALPHA  path.set_alpha(100)
+    bgr = pygame.transform.scale(bgr, scr)
+    path.blit(bgr,(0,0))
+    pygame.display.set_caption("Press [Space] to play/pause and [esc] to escape")
+    return path, bgr
  
 # класс физического тела
 class body():
@@ -130,8 +139,11 @@ class body():
         self.x += vec[0]
         self.y += vec[1]
  
-        if ma.fabs(self.x) >= self.borderx or ma.fabs(self.y) >= self.bordery:
-            self.live = False
+        bx, by = self.borderx, self.bordery
+
+        if (bx and by) > 0:
+            if ma.fabs(self.x) >= bx or ma.fabs(self.y) >= by:
+                self.live = False
  
     # отрисовка положения тела
     def draw(self, path, scax, scay, indentx, indenty, type=1):
@@ -177,7 +189,7 @@ scax = scay = 50  #40*p#87.5*p
 indx, indy = 0, 0 # percent
  
 # границы
-bor = (16, 8)
+bor = (0, 0) #(16, 8)
  
 # реагирует ли тело на другие тела
 react1 = 1
@@ -194,26 +206,18 @@ reall4 = 1
 # положение тел
 xp1, yp1 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)  -2.5
 xp2, yp2 = 0, 3 #ra.randint(-3, 3), ra.randint(-3, 3)
-xp3, yp3 = 4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)
-xp4, yp4 = -4, -4 #ra.randint(-3, 3), ra.randint(-3, 3)
  
 # нач скорость
 xv1, yv1 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
 xv2, yv2 = 4, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-xv3, yv3 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-xv4, yv4 = ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
  
 # масса
 m1 = -1 #ra.randint(3, 7)
 m2 = 1*10**0.5 #ra.randint(3, 7)
-m3 = ra.randint(3, 7)
-m4 = ra.randint(3, 7)
  
 # цвет тел
 col1 = (0, 0, 255)
 col2 = (255, 0, 0)
-col3 = (255, 255, 0)
-col4 = (255, 255, 255)
  
 # отрисовка текста
 dr_txt = bool( 1 )
@@ -237,33 +241,27 @@ st_vec_r = 6
 # отрисовка тел
 draw1 = 1
 draw2 = 1 #
-draw3 = 1
-draw4 = 1
 draw_n = 1
  
 # отрисовка векторов
 dr_vec1 = 1 #
 dr_vec2 = 1
-dr_vec3 = 1
-dr_vec4 = 1
 dr_vec_n = 1
  
 # импорт картинки
-star = pygame.image.load('star2.png')
 s = 50
+star = pygame.image.load('star2.png')
 star = pygame.transform.scale(star, (s, s))
 star.set_colorkey((255, 255, 255))
  
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
 b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, bor,  model=star)
-c = body(m3, [xp3, yp3], [xv3, yv3], step, col3, r3, rpath, draw3, react3, reall3, dr_vec3, bor)
-d = body(m4, [xp4, yp4], [xv4, yv4], step, col4, r4, rpath, draw4, react4, reall4, dr_vec4, bor)
  
 # массив со всеми телами, что
 # будут использоваться в симуляции
 abod = [a,b]
-abod = []
+#abod = []
  
 # печать всех значений self для всех тел
 for i in abod:
@@ -274,16 +272,13 @@ co = 0
  
 # импорт картинки, реализация экрана
 scr = (1540, 801)  #(1080, 2340)
-bgr = pygame.image.load('space2.jpg')
-path = pygame.display.set_mode(scr, RESIZABLE)  # FULLSCREEN) , SRCALPHA  path.set_alpha(100)
-bgr = pygame.transform.scale(bgr, scr)
-path.blit(bgr,(0,0))
-pygame.display.set_caption("Press [Space] to play/pause and [esc] to escape")
+img = 'space2.jpg'
+path, bgr = main_relise(img, scr)
  
 # реализация текста
+rect = (50, 50)
 f1 = pygame.font.SysFont("arial", f_siz)
 siz = (f_siz*0.65*num_sym, f_siz)
-rect = (50, 50)
 bla = pygame.Surface(siz)
 bla.fill((0, 0, 0))
 pygame.draw.rect(bla, (127, 127, 127), (1,1, *sum_vec(siz, [-2,-2])), 1)
@@ -305,7 +300,7 @@ pos_n = [0,0]
  
 run = True
 pause = False
-#run = pau()
+run = pau()
  
 while run:
     # условия окончания программы
@@ -368,7 +363,6 @@ while run:
  
     # создание нового объекта, с помощью касания
     if touched is True:
-        #vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
         if fr_toch is True:
             st_p_n = pygame.mouse.get_pos()
             col_n = rand_c()
@@ -381,7 +375,6 @@ while run:
             abod[-1].vec = vec_mul(vec_n, 10**-4.5)
             abod[-1].react = True
             abod[-1].react_all = True
-            #print(vec_n)
             fr_toch = True
  
     # смена на следующий рисунок
@@ -457,3 +450,5 @@ while run:
  
     # добавление шага
     co += 1
+
+#if __name__ == '__main__':
