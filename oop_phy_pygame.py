@@ -197,105 +197,12 @@ class body():
 
         return path
 
-# шаг времени
-step = 1*10**-6.75
-
-# границы
-bor = (0, 0) #(16, 8)
-
-# реагирует ли тело на другие тела
-react1 = 1
-react2 = 1 #
-
-# реагируют ли другие тела на тело 
-reall1 = 1
-reall2 = 1
-
-# положение тел
-xp1, yp1 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)  -2.5
-xp2, yp2 = 0, 3 #ra.randint(-3, 3), ra.randint(-3, 3)
-
-# нач скорость
-xv1, yv1 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
-xv2, yv2 = 4, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
-
-# масса
-m1 = -1 #ra.randint(3, 7)
-m2 = 1*10**0.5 #ra.randint(3, 7)
-
-# цвет тел
-col1 = (0, 0, 255)
-col2 = (255, 0, 0)
-
-# частота отрисовки
-dr_fr_path = 1 #+ 4*52
-dr_fr_bod = 300
-
-# радиус отрисовки тел
-r1 = r2 = r3 = r4 = r_n = 10
-
-# радиус пути
-rpath = 1
-
-# толщина линии вектора нач скорости
-# при создании нового тела
-st_vec_r = 6
-
-# отрисовка тел
-draw1 = 1
-draw2 = 1 #
-draw_n = 1
-
-# отрисовка векторов
-dr_vec1 = 1 #
-dr_vec2 = 1
-dr_vec_n = 1
-
-# импорт картинки, реализация экрана
-scr = (1540, 801)  #(1080, 2340)
-path, bgr = main_relise("space2.jpg", scr)
-star = img_imp("star2.png", 50, (255, 255, 255))
-
-# масштаб
-p = 1.91
-scax = scay = 50  #40*p#87.5*p
-
-# сдвиг, в % от всего изображения
-indx, indy = 0, 0 # percent
-
-# создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
-b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, bor,  model=star)
-
-# массив со всеми телами, что
-# будут использоваться в симуляции
-abod = [a,b]
-
-# реализация текста
-dr_txt = bool( 1 )
-f_siz = 30
-num_symol = 6
-st_point = (15, 15)
-fram_c = (127, 127, 127)
-font, bla, black = font_rel(f_siz, num_symol, 1, fram_c)
-
-# параметры для шоу частота отрисовки
-cha = False
-conv_n = [True for _ in range(3)]
-end_n = [True for _ in range(2)]
-conv_v = 5.125
-end_v = 20.5
-i_conv = i_end = end_in = 0
-
-txt = dr_txt, st_point, font, bla, black
-draw = scr, path, bgr, dr_fr_path, dr_fr_bod
-correction = scax, scay, indx, indy
-
-def main_f(abod, draw, txt, cha, correction):
+def main_f(abod, draw, txt, show, correction):
 
     dr_txt, st_point, font, bla, black = txt
     scr, path, bgr, dr_fr_path, dr_fr_bod = draw
     scax, scay, indx, indy = correction
+    cha, conv_n, end_n, conv_v, end_v, i_conv = show
 
     # нажатие
     touched = False
@@ -453,6 +360,100 @@ def main_f(abod, draw, txt, cha, correction):
         # добавление шага
         co += 1
 
-main_f(abod, draw, txt, cha, correction)
+# шаг времени
+step = 1*10**-6.75
 
-#if __name__ == '__main__':
+# границы
+bor = (0, 0) #(16, 8)
+
+# реагирует ли тело на другие тела
+react1 = 1
+react2 = 1 #
+
+# реагируют ли другие тела на тело 
+reall1 = 1
+reall2 = 1
+
+# положение тел
+xp1, yp1 = 0, 0 #ra.randint(-3, 3), ra.randint(-3, 3)  -2.5
+xp2, yp2 = 0, 3 #ra.randint(-3, 3), ra.randint(-3, 3)
+
+# нач скорость
+xv1, yv1 = 0, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4   5.3153
+xv2, yv2 = 4, 0 #ra.randint(-3, 3)*10**-4, ra.randint(-3, 3)*10**-4
+
+# масса
+m1 = -1 #ra.randint(3, 7)
+m2 = 1*10**0.5 #ra.randint(3, 7)
+
+# цвет тел
+col1 = (0, 0, 255)
+col2 = (255, 0, 0)
+
+# частота отрисовки
+dr_fr_path = 1 #+ 4*52
+dr_fr_bod = 300
+
+# радиус отрисовки тел
+r1 = r2 = r3 = r4 = r_n = 10
+
+# радиус пути
+rpath = 1
+
+# толщина линии вектора нач скорости
+# при создании нового тела
+st_vec_r = 6
+
+# отрисовка тел
+draw1 = 1
+draw2 = 1 #
+draw_n = 1
+
+# отрисовка векторов
+dr_vec1 = 1 #
+dr_vec2 = 1
+dr_vec_n = 1
+
+# импорт картинки, реализация экрана
+scr = (1540, 801)  #(1080, 2340)
+path, bgr = main_relise("space2.jpg", scr)
+star = img_imp("star2.png", 50, (255, 255, 255))
+
+# масштаб
+p = 1.91
+scax = scay = 50  #40*p#87.5*p
+
+# сдвиг, в % от всего изображения
+indx, indy = 0, 0 # percent
+
+# создание экземпляра класса
+a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
+b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, reall2, dr_vec2, bor,  model=star)
+
+# массив со всеми телами, что
+# будут использоваться в симуляции
+abod = [a,b]
+
+# реализация текста
+dr_txt = bool( 1 )
+f_siz = 30
+num_symol = 6
+st_point = (15, 15)
+fram_c = (127, 127, 127)
+font, bla, black = font_rel(f_siz, num_symol, 1, fram_c)
+
+# параметры для шоу частота отрисовки
+cha = False
+conv_n = [True for _ in range(3)]
+end_n = [True for _ in range(2)]
+conv_v = 5.125
+end_v = 20.5
+i_conv = i_end = end_in = 0
+
+txt = dr_txt, st_point, font, bla, black
+draw = scr, path, bgr, dr_fr_path, dr_fr_bod
+correction = scax, scay, indx, indy
+show = cha, conv_n, end_n, conv_v, end_v, i_conv
+
+if __name__ == '__main__':
+    main_f(abod, draw, txt, show, correction)
