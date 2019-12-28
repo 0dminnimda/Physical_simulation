@@ -282,8 +282,7 @@ i_conv = i_end = end_in = 0
 # нажатие
 touched = False
 fr_toch = True
-vec_n = [0,0]
-pos_n = [0,0]
+vec_n = pos_n = [0,0]
 
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1, reall1, dr_vec1, bor)
@@ -323,16 +322,16 @@ while run:
                 path.blit(bgr,(0,0))
 
             # ускороние
-            elif event.key == K_a:
-                yv1 += 1/20
-                a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
-                abod = [a, b]
-            elif event.key == K_d:
-                yv1 -= 1/20
-                a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-                b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
-                abod = [a, b]
+            #elif event.key == K_a:
+            #    yv1 += 1/20
+            #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
+            #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
+            #    abod = [a, b]
+            #elif event.key == K_s:
+            #    yv1 -= 1/20
+            #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
+            #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
+            #    abod = [a, b]
 
             # масштаб
             elif event.key == K_z:
@@ -353,18 +352,15 @@ while run:
                 for i in abod:
                     i.pr("x",end="")
                     i.pr("y")
+
+            elif event.key == K_d:
+                abod = []
+                path.blit(bgr,(0,0))
+
             # пауза
             elif event.key == K_SPACE:
                 #run = pau()
                 pause = bool((int(pause)+1)%2)
-
-    # выполнение паузы
-    '''if pause is True:
-        #if paus == 1:
-        #run = pau()
-        pause = False
-        #paus = 0
-        print("exit")'''
 
     # создание нового объекта, с помощью касания
     if touched is True:
@@ -374,13 +370,12 @@ while run:
             pos_n = mp(scax, scay, scr, indx, indy)
             abod.append(body(ri(1,5), pos_n, [0,0], step, col_n, r_n, rpath, draw_n, 0, 0, dr_vec_n, bor))
             fr_toch = False
-    else:
-        if fr_toch is False:
-            vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
-            abod[-1].vec = vec_mul(vec_n, 10**-4.5)
-            abod[-1].react = True
-            abod[-1].react_all = True
-            fr_toch = True
+    elif fr_toch is False:
+        vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
+        abod[-1].vec = vec_mul(vec_n, 10**-4.5)
+        abod[-1].react = True
+        abod[-1].react_all = True
+        fr_toch = True
 
     # смена на следующий рисунок
     if cha is True and ve_l([abod[1].x, abod[1].y]) > end_v and end_n[i_end] is True:
@@ -405,8 +400,6 @@ while run:
         i_conv += 1
 
     abod, _ = check(abod)
-    '''if bbbo is True:
-        pause = True'''
 
     # цикл перечисляет все элементы
     # массива с телами
@@ -432,11 +425,9 @@ while run:
         # рисуем вектор скорости нового тела
         if touched is True:
             dr_t_v = turn(pygame.mouse.get_pos(), st_p_n)
-            #dr_t_v = vec_mul(dr_t_v)
             pygame.draw.line(path, col_n, st_p_n, dr_t_v, st_vec_r)
 
         # текст на изображении
-        #bla.fill((0, 0, 0))
         if dr_txt is True:
             bla.blit(black, (0,0))
             path.blit(bla, st_point)
@@ -451,7 +442,6 @@ while run:
 
         pygame.display.update()
         path.blit(img, (0,0))
-        #path.fill((0,0,0))
 
     # добавление шага
     co += 1
