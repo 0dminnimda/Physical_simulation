@@ -277,9 +277,10 @@ def main_f(abod, phy, draw, txt, show, correction):
                 # выход
                 if event.key == K_ESCAPE:
                     run = False
+
                 # очистка экрана
-                elif event.key == K_c:
-                    path.blit(bgr,(0,0))
+                #elif event.key == K_c:
+                #    path.blit(bgr,(0,0))
 
                 # ускороние
                 #elif event.key == K_a:
@@ -292,6 +293,15 @@ def main_f(abod, phy, draw, txt, show, correction):
                 #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
                 #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
                 #    abod = [a, b]
+
+                elif event.key == K_w:
+                    indy += 10
+                elif event.key == K_a:
+                    indx += 10
+                elif event.key == K_s:
+                    indy -= 10
+                elif event.key == K_d:
+                    indx -= 10
 
                 # масштаб
                 elif event.key == K_z:
@@ -313,7 +323,7 @@ def main_f(abod, phy, draw, txt, show, correction):
                         i.pr("x",end="")
                         i.pr("y")
 
-                elif event.key == K_d:
+                elif event.key == K_c:
                     abod = []
                     path.blit(bgr,(0,0))
 

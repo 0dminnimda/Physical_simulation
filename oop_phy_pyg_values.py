@@ -103,7 +103,7 @@ i_conv = i_end = end_in = 0
 
 # создание экземпляра класса
 a = body(m1, [xp1, yp1], [xv1, yv1], (step, border, react1, reall1), (col1, rpath, r1, draw1, dr_vec1, max, conn))
-b = body(m2, [xp2, yp2], [xv2, yv2], (step, border, react2, reall2), (col1, rpath, r2, draw2, dr_vec2, max, conn), model=star)
+b = body(m2, [xp2, yp2], [xv2, yv2], (step, border, react2, reall2), (col2, rpath, r2, draw2, dr_vec2, max, conn), model=star)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
