@@ -209,11 +209,12 @@ class body():
         return path
 
     # запись пути в массив
-    def add(self):
-        arr = self.p_arr
-        arr.append([self.x, self.y])
-        if len(arr) > self.max:
-            del arr[0]
+    def add(self, pause):
+        if pause is False:
+            arr = self.p_arr
+            arr.append([self.x, self.y])
+            if len(arr) > self.max:
+                del arr[0]
 
     # отображение пути
     def dr_path(self, img, scax, scay, indentx, indenty):
@@ -244,6 +245,10 @@ def main_f(abod, phy, draw, txt, show, correction):
         scax, scay, indx, indy = correction
         cha, conv_n, end_n, conv_v, end_v, i_conv = show
         step, border, rpath, r_n, draw_n, dr_vec_n, st_vec_r = phy
+
+        ch_bo = True
+        if (phy[1][0] and phy[1][1]) <= 0:
+            ch_bo = False
 
         # нажатие
         touched = False
@@ -354,7 +359,8 @@ def main_f(abod, phy, draw, txt, show, correction):
             conv_v += 5.125
             i_conv += 1
 
-        abod, _ = check(abod)
+        if ch_bo is True:
+            abod, _ = check(abod)
 
         # цикл перечисляет все элементы
         # массива с телами
@@ -372,7 +378,7 @@ def main_f(abod, phy, draw, txt, show, correction):
             #    path = abod[i].draw(path, scax, scay, indx, indy)
 
             if co%dr_fr_path == 0:
-                abod[i].add()
+                abod[i].add(pause)
 
         # раз в _ шагов рисуются и отображаются все тела
         if co%dr_fr_bod == 0:
