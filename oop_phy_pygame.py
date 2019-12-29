@@ -264,9 +264,14 @@ def main_f(abod, phy, draw, txt, show, correction):
         pr_a = False
         pr_s = False
         pr_d = False
+        pr_z = False
+        pr_x = False
 
         # счётчик
         co = 0
+
+        sca_c = 1
+        sca_n = 0.005
 
     while run:
         # условия окончания программы
@@ -283,6 +288,7 @@ def main_f(abod, phy, draw, txt, show, correction):
                 if event.key == K_ESCAPE:
                     run = False
 
+                # движение
                 if event.key == K_w:
                     pr_w = True
                 elif event.key == K_s:
@@ -294,11 +300,11 @@ def main_f(abod, phy, draw, txt, show, correction):
 
                 # масштаб
                 if event.key == K_z:
-                    scax -= 10
-                    scay -= 10
+                    pr_z = True
                 elif event.key == K_x:
-                    scax += 10
-                    scay += 10
+                    pr_x = True
+                    #scax += 10
+                    #scay += 10
 
                 # частота отрисовки
                 if event.key == K_o:
@@ -321,14 +327,21 @@ def main_f(abod, phy, draw, txt, show, correction):
                     pause = not pause
 
             if event.type == KEYUP:
+                # движение
                 if event.key == K_w:
                     pr_w = False
-                elif event.key == K_a:
-                    pr_a = False
                 elif event.key == K_s:
                     pr_s = False
+
+                if event.key == K_a:
+                    pr_a = False
                 elif event.key == K_d:
                     pr_d = False
+
+                if event.key == K_z:
+                    pr_z = False
+                elif event.key == K_x:
+                    pr_x = False
 
         if co%ind_c == 0:
             if pr_w is True:
@@ -339,6 +352,14 @@ def main_f(abod, phy, draw, txt, show, correction):
                 indx += ind_n
             elif pr_d is True:
                 indx -= ind_n
+
+        if co%sca_c == 0:
+            if pr_z is True:
+                scax -= sca_n
+                scay -= sca_n
+            if pr_x is True:
+                scax += sca_n
+                scay += sca_n
 
         # создание нового объекта, с помощью касания
         if touched is True:
