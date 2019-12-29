@@ -127,6 +127,9 @@ def collision(abod):
                     if m < m2:
                         bod.live = False
                     elif m > m2:
+                        bod.vec = add_vec(bod.vec, ob.vec)
+                        bod.rad = round(ve_l([rad, ob.rad]))
+                        bod.r = int(ve_l([bod.r, ob.r]))
                         if m2 < 0:
                             bod.m -= m2
                         else:
