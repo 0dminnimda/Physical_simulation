@@ -241,7 +241,7 @@ def main_f(abod, phy, draw, txt, show, correction):
     # сокращение
     for _ in range(1):
         dr_txt, st_point, font, bla, black = txt
-        scr, path, bgr, dr_fr_path, dr_fr_bod = draw
+        scr, path, bgr, dr_fr_path, dr_fr_bod, max, conn = draw
         scax, scay, indx, indy = correction
         cha, conv_n, end_n, conv_v, end_v, i_conv = show
         step, border, rpath, r_n, draw_n, dr_vec_n, st_vec_r = phy
@@ -328,7 +328,7 @@ def main_f(abod, phy, draw, txt, show, correction):
                 st_p_n = pygame.mouse.get_pos()
                 col_n = rand_c()
                 pos_n = mp(scax, scay, scr, indx, indy)
-                abod.append(body(ri(1,5), pos_n, [0,0], (step, border, 0, 0), (col_n, rpath, r_n, draw_n, dr_vec_n)))
+                abod.append(body(ri(1,5), pos_n, [0,0], (step, border, 0, 0), (col_n, rpath, r_n, draw_n, dr_vec_n, max, conn)))
                 fr_toch = False
         elif fr_toch is False:
             vec_n = add_vec(pos_n, mp(scax, scay, scr, indx, indy), sign=-1)
@@ -372,10 +372,6 @@ def main_f(abod, phy, draw, txt, show, correction):
             # и оно реагирует ( движется или стоит)
             if pause is False:
                 abod[i].calc(*other)
-
-            # раз в _ шагов рисуются все пути тел
-            #if co%dr_fr_path == 0:
-            #    path = abod[i].draw(path, scax, scay, indx, indy)
 
             if co%dr_fr_path == 0:
                 abod[i].add(pause)
