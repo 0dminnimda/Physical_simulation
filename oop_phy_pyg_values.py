@@ -65,6 +65,11 @@ max = 500
 # соединять ли точки пути
 conn = bool( 1 )
 
+#
+ind_n = 0.005
+ind_c = 1
+
+
 
 
 # отрисовка векторов
@@ -112,7 +117,7 @@ all_bodies = [a,b]
 # создаём "упаковки" для информации
 txt = dr_txt, st_point, font, bla, black
 draw = scr, path, bgr, dr_fr_path, dr_fr_body, max, conn
-correction = scax, scay, indx, indy
+correction = scax, scay, indx, indy, ind_n, ind_c
 show = cha, conv_n, end_n, conv_v, end_v, i_conv
 phy = step, border, rpath, r_n, draw_n, dr_vec_n, st_vec_r
 

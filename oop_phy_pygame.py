@@ -182,8 +182,7 @@ class body():
             col = self.col
 
             # положение центра фигуры
-            hx = w/2 + px*scax + w*indentx/100
-            hy = h/2 + py*scay + h*indenty/100
+            hx, hy = transform(px, py, w, h, scax, scay, indentx, indenty)
 
             # тип объекта
             if type == 1:
@@ -242,7 +241,7 @@ def main_f(abod, phy, draw, txt, show, correction):
     for _ in range(1):
         dr_txt, st_point, font, bla, black = txt
         scr, path, bgr, dr_fr_path, dr_fr_bod, max, conn = draw
-        scax, scay, indx, indy = correction
+        scax, scay, indx, indy, ind_n, ind_c = correction
         cha, conv_n, end_n, conv_v, end_v, i_conv = show
         step, border, rpath, r_n, draw_n, dr_vec_n, st_vec_r = phy
 
@@ -259,6 +258,12 @@ def main_f(abod, phy, draw, txt, show, correction):
         run = True
         pause = False
         run = pau()
+
+        # кнопки
+        pr_w = False
+        pr_a = False
+        pr_s = False
+        pr_d = False
 
         # счётчик
         co = 0
@@ -278,33 +283,17 @@ def main_f(abod, phy, draw, txt, show, correction):
                 if event.key == K_ESCAPE:
                     run = False
 
-                # очистка экрана
-                #elif event.key == K_c:
-                #    path.blit(bgr,(0,0))
-
-                # ускороние
-                #elif event.key == K_a:
-                #    yv1 += 1/20
-                #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-                #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
-                #    abod = [a, b]
-                #elif event.key == K_s:
-                #    yv1 -= 1/20
-                #    a = body(m1, [xp1, yp1], [xv1, yv1], step, col1, r1, rpath, draw1, react1)
-                #    b = body(m2, [xp2, yp2], [xv2, yv2], step, col2, r2, rpath, draw2, react2, star)
-                #    abod = [a, b]
-
-                elif event.key == K_w:
-                    indy += 10
-                elif event.key == K_a:
-                    indx += 10
+                if event.key == K_w:
+                    pr_w = True
                 elif event.key == K_s:
-                    indy -= 10
+                    pr_s = True
+                if event.key == K_a:
+                    pr_a = True
                 elif event.key == K_d:
-                    indx -= 10
+                    pr_d = True
 
                 # масштаб
-                elif event.key == K_z:
+                if event.key == K_z:
                     scax -= 10
                     scay -= 10
                 elif event.key == K_x:
@@ -312,7 +301,7 @@ def main_f(abod, phy, draw, txt, show, correction):
                     scay += 10
 
                 # частота отрисовки
-                elif event.key == K_o:
+                if event.key == K_o:
                     dr_fr_path += 1
                 elif event.key == K_p:
                     dr_fr_path -= 1
@@ -329,8 +318,27 @@ def main_f(abod, phy, draw, txt, show, correction):
 
                 # пауза
                 elif event.key == K_SPACE:
-                    #run = pau()
-                    pause = bool((int(pause)+1)%2)
+                    pause = not pause
+
+            if event.type == KEYUP:
+                if event.key == K_w:
+                    pr_w = False
+                elif event.key == K_a:
+                    pr_a = False
+                elif event.key == K_s:
+                    pr_s = False
+                elif event.key == K_d:
+                    pr_d = False
+
+        if co%ind_c == 0:
+            if pr_w is True:
+                indy += ind_n
+            elif pr_s is True:
+                indy -= ind_n
+            if pr_a is True:
+                indx += ind_n
+            elif pr_d is True:
+                indx -= ind_n
 
         # создание нового объекта, с помощью касания
         if touched is True:
