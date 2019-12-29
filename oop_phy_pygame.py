@@ -109,7 +109,7 @@ def font_rel(f_siz, num_symol, fram_r, fram_c, txt_font="arial"):
 class body():
     def __init__(self, m, pos, vec, phy, draw, model=0):
         step, border, react, react2 = phy
-        col, r_path, r, dr, dr_vec = draw
+        col, r_path, r, dr, dr_vec, max, conn = draw
 
         self.rad = 1*10**-5  # радиус тела
         self.borderx, self.bordery = border  # границы
@@ -126,6 +126,9 @@ class body():
         self.react_all = bool(react2)  # реагируют ли другие тела на тело 
         self.dr_vec = bool(dr_vec)  # рисовать ли вектор
         self.model = model  # отрисует картинку вместо точки
+        self.p_arr = []  # массив пути
+        self.max = max  # максимальное количество точек в массиве пути
+        self.connect = conn  # соединять ли точки пути
 
     # печать значений объекта класса
     def pr(self,*ar,**kw):
@@ -173,29 +176,53 @@ class body():
             vec = self.vec
             col = self.col
 
+            # положение центра фигуры
+            hx = w/2 + px*scax + w*indentx/100
+            hy = h/2 + py*scay + h*indenty/100
+
+            # тип объекта
             if type == 1:
                 r = self.r_path
                 type = r
             elif type == 0:
                 r = self.r
 
-            # положение центра фигуры
-            hx = w/2 + px*scax + w*indentx/100
-            hy = h/2 + py*scay + h*indenty/100
-
+            # отрисовка тела
             mo = self.model
             if type != 1 and mo != 0:
+                # модель
                 path.blit(mo, (int(hx-mo.get_width()//2), int(hy-mo.get_height()//2)))
-            else:                
+            else:  
+                # круг
                 pygame.draw.circle(path, col, (int(hx), int(hy)), r, type)
 
+            # отрисовка вектора
             if type != 1 and ve_l(vec) != 0 and self.dr_vec is True:
                 vve = add_vec(vec_mul(vec, 10**4.9375), (hx, hy))
-                #for i in range(-1, 2):
-                #    pygame.draw.aaline(path, (0, 255, 0), (hx+i, hy+i), sum_vec(vve, [0+i, i]), -1)
                 pygame.draw.line(path, (0, 255, 0), (hx, hy), vve, 3)
 
         return path
+
+    # запись пути в массив
+    def add(self):
+        arr = self.p_arr
+        print(len(arr))
+        arr.append([self.x, self.y])
+        if len(arr) > self.max:
+            del arr[0]
+
+    # отображение пути
+    def dr_path(self, img, scax, scay, indentx, indenty):
+        arr = self.p_arr
+        w, h = img.get_width(), img.get_height()
+        col = self.col
+        r = self.r_path
+        for i in arr:
+            hx = w/2 + i[0]*scax + w*indentx/100
+            hy = h/2 + i[1]*scay + h*indenty/100
+            if self.connect is False:
+                pygame.draw.circle(img, col, (int(hx), int(hy)), r, r)
+
 
 # главная функция
 def main_f(abod, phy, draw, txt, show, correction):
@@ -330,20 +357,30 @@ def main_f(abod, phy, draw, txt, show, correction):
             if pause is False:
                 abod[i].calc(*other)
 
-            # раз в _ шагов отображаются все пути тел
-            if co%dr_fr_path == 0:
-                path = abod[i].draw(path, scax, scay, indx, indy)
+            # раз в _ шагов рисуются все пути тел
+            #if co%dr_fr_path == 0:
+            #    path = abod[i].draw(path, scax, scay, indx, indy)
 
-        # раз в _ шагов отображаются все тела
+            if co%dr_fr_path == 0:
+                abod[i].add()
+
+        # раз в _ шагов рисуются и отображаются все тела
         if co%dr_fr_bod == 0:
             # создаём копию, чтобы не повредить
             # основное изображение с путями
             img = path.copy()
 
+            for i in range(len(abod)):
+                abod[i].dr_path(path, scax, scay, indx, indy)
+
             # рисуем вектор скорости нового тела
             if touched is True:
                 dr_t_v = turn(pygame.mouse.get_pos(), st_p_n)
                 pygame.draw.line(path, col_n, st_p_n, dr_t_v, st_vec_r)
+
+            for i in range(len(abod)):
+                # рисуем каждое тело
+                path = abod[i].draw(path, scax, scay, indx, indy, type=0)
 
             # текст на изображении
             if dr_txt is True:
@@ -353,10 +390,6 @@ def main_f(abod, phy, draw, txt, show, correction):
                 #ve_l([abod[0].x-abod[1].x, abod[0].y-abod[1].y])
                 text1 = font.render(str(some), 1, (0, 0, 255))
                 path.blit(text1, sum_vec(st_point, [5, 0]))
-
-            for i in range(len(abod)):
-                # рисуем каждое тело
-                path = abod[i].draw(path, scax, scay, indx, indy, type=0)
 
             pygame.display.update()
             path.blit(img, (0,0))

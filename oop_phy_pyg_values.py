@@ -59,6 +59,13 @@ draw1 = 1
 draw2 = 1 #
 draw_n = 1
 
+# максимальное количество точек в массиве пути
+max = 750
+
+# соединять ли точки пути
+conn = False
+
+
 # отрисовка векторов
 dr_vec1 = 1 #
 dr_vec2 = 1
@@ -69,7 +76,7 @@ dr_vec_n = 1
 st_vec_r = 6
 
 # частота отрисовки
-dr_fr_path = 1 #+ 4*52
+dr_fr_path = 50 #+ 4*52
 dr_fr_body = 300
 
 # импорт картинки, реализация экрана
@@ -94,8 +101,8 @@ end_v = 20.5
 i_conv = i_end = end_in = 0
 
 # создание экземпляра класса
-a = body(m1, [xp1, yp1], [xv1, yv1], (step, border, react1, reall1), (col1, rpath, r1, draw1, dr_vec1))
-b = body(m2, [xp2, yp2], [xv2, yv2], (step, border, react2, reall2), (col1, rpath, r2, draw2, dr_vec2), model=star)
+a = body(m1, [xp1, yp1], [xv1, yv1], (step, border, react1, reall1), (col1, rpath, r1, draw1, dr_vec1, max, conn))
+b = body(m2, [xp2, yp2], [xv2, yv2], (step, border, react2, reall2), (col1, rpath, r2, draw2, dr_vec2, max, conn), model=star)
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
