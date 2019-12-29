@@ -285,6 +285,12 @@ def main_f(abod, phy, draw, txt, show, correction):
                 if event.key == K_ESCAPE:
                     run = False
 
+                if event.key == K_v:
+                    pass
+
+                if event.key == K_h:
+                    indy, indx = 0, 0
+
                 # движение
                 if event.key == K_w:
                     pr_w = True
@@ -300,8 +306,6 @@ def main_f(abod, phy, draw, txt, show, correction):
                     pr_z = True
                 elif event.key == K_x:
                     pr_x = True
-                    #scax += 10
-                    #scay += 10
 
                 # частота отрисовки
                 if event.key == K_o:

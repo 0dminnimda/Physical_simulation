@@ -70,7 +70,7 @@ ind_n = 0.005
 ind_c = 1
 
 #
-sca_n = 0.005
+sca_n = 0.001
 sca_c = 1
 
 
