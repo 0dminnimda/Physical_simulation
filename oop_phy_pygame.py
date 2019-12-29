@@ -221,15 +221,17 @@ class body():
         w, h = img.get_width(), img.get_height()
         col = self.col
         r = self.r_path
-        for i in arr:
-            hx, hy = transform(i[0], i[1], w, h, scax, scay, indentx, indenty)
-            #hx = w/2 + i[0]*scax + w*indentx/100
-            #hy = h/2 + i[1]*scay + h*indenty/100
+        for i in range(1,len(arr)):
+            hx, hy = transform(arr[i][0], arr[i][1], w, h, scax, scay, indentx, indenty)
             conn = self.connect
-            if conn is False:
+            if conn is True:
+                if len(arr) >= 2:
+                    hx2, hy2 = transform(arr[i-1][0], arr[i-1][1], w, h, scax, scay, indentx, indenty)
+                    pygame.draw.line(img, col, (hx, hy), (hx2, hy2), r)
+                else:
+                    pygame.draw.line(img, col, (hx, hy), (hx, hy), r)
+            elif conn is False:
                 pygame.draw.circle(img, col, (int(hx), int(hy)), r, r)
-            elif conn is True:
-                pygame.lineline(img, col, (hx, hy), vve, 3)
 
 
 # главная функция
