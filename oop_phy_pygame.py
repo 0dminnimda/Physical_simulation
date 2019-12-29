@@ -241,7 +241,7 @@ def main_f(abod, phy, draw, txt, show, correction):
     for _ in range(1):
         dr_txt, st_point, font, bla, black = txt
         scr, path, bgr, dr_fr_path, dr_fr_bod, max, conn = draw
-        scax, scay, indx, indy, ind_n, ind_c = correction
+        scax, scay, indx, indy, ind_n, ind_c, sca_n, sca_c = correction
         cha, conv_n, end_n, conv_v, end_v, i_conv = show
         step, border, rpath, r_n, draw_n, dr_vec_n, st_vec_r = phy
 
@@ -269,9 +269,6 @@ def main_f(abod, phy, draw, txt, show, correction):
 
         # счётчик
         co = 0
-
-        sca_c = 1
-        sca_n = 0.005
 
     while run:
         # условия окончания программы
