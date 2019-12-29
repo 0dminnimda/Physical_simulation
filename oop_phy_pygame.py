@@ -116,16 +116,21 @@ class body():
         step, border, react, react2 = phy
         col, r_path, r, dr, dr_vec, max, conn = draw
 
-        self.rad = 1*10**-5  # радиус тела
+        #self.density = den  # плотность
+        den = 10**-2
+        s = ma.fabs(m/den)  # площадь
+        rad = round(ma.sqrt(s/ma.pi))
+
+        self.m = m  # масса
+        self.rad = rad*10**-2  #1*10**-1.1  # радиус тела
         self.borderx, self.bordery = border  # границы
         self.live = True  # существование
-        self.m = m  # масса
         self.x, self.y = pos  # положение (x,y)
         self.vec = vec_mul(vec,10**-4.5)  # вектор {x,y}
         self.step = step  # шаг времени
         self.col = col  # цвет отображения тел
-        self.r_path = r_path  # радиус отрисовки тел
-        self.r = r  # радиус отрисовки тел
+        self.r_path = r_path  # радиус отрисовки пути тел
+        self.r = rad #r  # радиус отрисовки тел
         self.dr_bo = bool(dr)  # рисовать ли тело
         self.react = bool(react)  # реагирует ли тело на другие тела
         self.react_all = bool(react2)  # реагируют ли другие тела на тело 
@@ -232,6 +237,9 @@ class body():
                     pygame.draw.line(img, col, (hx, hy), (hx, hy), r*3)
             elif conn is False:
                 pygame.draw.circle(img, col, (int(hx), int(hy)), r, r)
+
+    #
+    #def collis
 
 
 # главная функция
