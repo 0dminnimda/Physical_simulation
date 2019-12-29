@@ -227,9 +227,9 @@ class body():
             if conn is True:
                 if len(arr) >= 2:
                     hx2, hy2 = transform(arr[i-1][0], arr[i-1][1], w, h, scax, scay, indentx, indenty)
-                    pygame.draw.line(img, col, (hx, hy), (hx2, hy2), r)
+                    pygame.draw.line(img, col, (hx, hy), (hx2, hy2), r*3)
                 else:
-                    pygame.draw.line(img, col, (hx, hy), (hx, hy), r)
+                    pygame.draw.line(img, col, (hx, hy), (hx, hy), r*3)
             elif conn is False:
                 pygame.draw.circle(img, col, (int(hx), int(hy)), r, r)
 
