@@ -374,7 +374,7 @@ def main_f(abod, phy, draw, txt, show, correction):
                 abod[i].calc(*other)
 
             if co%dr_fr_path == 0:
-                abod[i].add(pause)
+                abod[i].add(False)  #False/pause
 
         # раз в _ шагов рисуются и отображаются все тела
         if co%dr_fr_bod == 0:
