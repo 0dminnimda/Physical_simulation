@@ -24,6 +24,11 @@ def ve_l(a):
 def vec_mul(arr, mul):
     return [i*mul for i in arr]
 
+def transform(x, y, w, h, scax, scay, indentx, indenty):
+    x = w/2 + x*scax + w*indentx/100
+    y = h/2 + y*scay + h*indenty/100
+    return x, y
+
 # конвертация позиций нажатий в нужные значения
 def mp(sx, sy, scr, indx, indy): 
     mp = pygame.mouse.get_pos()
@@ -206,7 +211,6 @@ class body():
     # запись пути в массив
     def add(self):
         arr = self.p_arr
-        print(len(arr))
         arr.append([self.x, self.y])
         if len(arr) > self.max:
             del arr[0]
@@ -218,10 +222,14 @@ class body():
         col = self.col
         r = self.r_path
         for i in arr:
-            hx = w/2 + i[0]*scax + w*indentx/100
-            hy = h/2 + i[1]*scay + h*indenty/100
-            if self.connect is False:
+            hx, hy = transform(i[0], i[1], w, h, scax, scay, indentx, indenty)
+            #hx = w/2 + i[0]*scax + w*indentx/100
+            #hy = h/2 + i[1]*scay + h*indenty/100
+            conn = self.connect
+            if conn is False:
                 pygame.draw.circle(img, col, (int(hx), int(hy)), r, r)
+            elif conn is True:
+                pygame.lineline(img, col, (hx, hy), vve, 3)
 
 
 # главная функция
