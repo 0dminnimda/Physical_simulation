@@ -110,6 +110,33 @@ def font_rel(f_siz, num_symol, fram_r, fram_c, txt_font="arial"):
     black = bla.copy()
     return font, bla, black
 
+# столкновение
+def collision(abod):
+    for i in range(len(abod)):
+        other = abod[:]
+        del other[i]
+        bod = abod[i]
+        if bod.live is True:
+            m = bod.m
+            for ob in other:
+                m2 = ob.m
+                x, y = bod.x, bod.y
+                x2, y2 = ob.x, ob.y
+                rad = bod.rad
+                if x-rad < x2 < x+rad and y-rad < y2 < y+rad:
+                    if m < m2:
+                        bod.live = False
+                    elif m > m2:
+                        if m2 < 0:
+                            bod.m -= m2
+                        else:
+                            bod.m += m2
+                    elif m == m2:
+                        bod.m = -m
+                        bod.live = False
+
+    return abod
+
 # класс физического тела
 class body():
     def __init__(self, m, pos, vec, phy, draw, model=0):
@@ -237,9 +264,6 @@ class body():
                     pygame.draw.line(img, col, (hx, hy), (hx, hy), r*3)
             elif conn is False:
                 pygame.draw.circle(img, col, (int(hx), int(hy)), r, r)
-
-    #
-    #def collis
 
 
 # главная функция
@@ -407,8 +431,10 @@ def main_f(abod, phy, draw, txt, show, correction):
             conv_v += 5.125
             i_conv += 1
 
-        if ch_bo is True:
-            abod, _ = check(abod)
+        abod = collision(abod)
+
+        #if ch_bo is True:
+        abod, _ = check(abod)
 
         # цикл перечисляет все элементы
         # массива с телами

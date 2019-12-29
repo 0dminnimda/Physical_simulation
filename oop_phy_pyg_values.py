@@ -114,7 +114,7 @@ b = body(m2, [xp2, yp2], [xv2, yv2], (step, border, react2, reall2), (col2, rpat
 
 # массив со всеми телами, что
 # будут использоваться в симуляции
-all_bodies = [a,b]
+all_bodies = [a, b]
 
 # создаём "упаковки" для информации
 txt = dr_txt, st_point, font, bla, black
